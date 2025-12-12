@@ -57,6 +57,13 @@
       <p><strong>Status:</strong> <span id="tier4-status"></span></p>
       <p id="tier4-notes"></p>
     </section>
+    
+    <section class="abe-panel" id="funding-panel" style="margin-top:1rem;display:none;">
+      <h2>Funding & FCA Audit</h2>
+      <p><strong>Risk level:</strong> <span id="fund-risk"></span></p>
+      <p><strong>Theories:</strong> <span id="fund-theories"></span></p>
+      <p id="fund-notes"></p>
+    </section>
 
     <section class="abe-panel" id="raw-panel" style="margin-top:1rem;display:none;">
       <h2>Technical Snapshot (JSON)</h2>
@@ -70,9 +77,8 @@
   <script src="../engine/funding_audit/funding_audit.js"></script>
 
   <!-- Simple renderer that waits for ABE_LawAudit in localStorage -->
-  <script>
-    (function () {
-      const LAWAUDIT_KEY = "ABE_LawAudit";
+  <const LAWAUDIT_KEY = "ABE_LawAudit";
+      const FUNDING_KEY = "ABE_FundingAudit";
 
       function $(id) { return document.getElementById(id); }
 
