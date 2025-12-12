@@ -11,6 +11,13 @@
         "version": "1.0.0",
         "entry": "../engine/intake/intake.js",
         "status": "stable"
+      },
+      {
+        "id": "classify",
+        "name": "Classifier",
+        "version": "1.0.0",
+        "entry": "../engine/classify/classify.js",
+        "status": "stable"
       }
     ]
   }
