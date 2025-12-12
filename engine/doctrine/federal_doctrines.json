@@ -1,0 +1,83 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-12-12",
+  "doctrines": [
+    {
+      "id": "supremacy_clause",
+      "name": "Supremacy Clause",
+      "source": "U.S. Const. art. VI, cl. 2",
+      "category": "hierarchy",
+      "description": "Federal Constitution and statutes made in pursuance thereof are the supreme law of the land and override conflicting state laws.",
+      "tests": [
+        "Does a state statute conflict with a valid federal statute, regulation, or constitutional protection?",
+        "Does the state attempt to authorize what federal law forbids, or forbid what federal law protects?"
+      ]
+    },
+    {
+      "id": "preemption_field",
+      "name": "Field Preemption",
+      "source": "Supreme Court doctrine",
+      "category": "preemption",
+      "description": "When Congress occupies an entire field of regulation, states may not legislate in that field even if there is no direct conflict.",
+      "tests": [
+        "Has Congress created a comprehensive regulatory scheme for this subject area (e.g., interstate motor carrier safety)?",
+        "Is the state attempting to regulate private individuals as if they are within that federal field?"
+      ]
+    },
+    {
+      "id": "preemption_conflict",
+      "name": "Conflict Preemption",
+      "source": "Supreme Court doctrine",
+      "category": "preemption",
+      "description": "State law is preempted when compliance with both state and federal law is impossible or when state law stands as an obstacle to federal objectives.",
+      "tests": [
+        "Does enforcing the state law frustrate a federal purpose or condition of funding?",
+        "Would following the state rule require violating a federal limit or protected right?"
+      ]
+    },
+    {
+      "id": "ultra_vires_state",
+      "name": "Ultra Vires State Action",
+      "source": "Constitutional structure",
+      "category": "authority",
+      "description": "States may not exercise powers not granted by the Constitution or reserved to them under the Tenth Amendment.",
+      "tests": [
+        "Is the state using police or regulatory power beyond what its own statutes and the federal structure authorize?",
+        "Is the state treating a private citizen as a commercial actor without a clear constitutional or statutory basis?"
+      ]
+    },
+    {
+      "id": "freedom_of_movement",
+      "name": "Freedom of Movement / Travel",
+      "source": "Substantive due process & privileges/immunities doctrine",
+      "category": "rights",
+      "description": "Citizens have a protected liberty interest in movement and travel that cannot be restricted by states without due process and constitutional justification.",
+      "tests": [
+        "Does the state condition basic movement on a commercial-style license?",
+        "Is liberty of movement being restricted absent individualized suspicion or due process?"
+      ]
+    },
+    {
+      "id": "due_process_substantive",
+      "name": "Substantive Due Process",
+      "source": "U.S. Const. amend. V & XIV",
+      "category": "rights",
+      "description": "Government may not arbitrarily infringe fundamental liberties, even if procedures look proper on paper.",
+      "tests": [
+        "Is a fundamental liberty interest (life, bodily integrity, family, movement) being restricted?",
+        "Is the restriction narrowly tailored and justified by a legitimate, lawful interest?"
+      ]
+    },
+    {
+      "id": "section_1983_remedy",
+      "name": "Civil Rights Remedy",
+      "source": "42 U.S.C. § 1983",
+      "category": "remedy",
+      "description": "Provides a cause of action against persons acting under color of state law who violate federal rights.",
+      "tests": [
+        "Is the actor a state or local official or someone acting under state authority?",
+        "Has a federal right (constitutional or statutory) been violated?"
+      ]
+    }
+  ]
+}
