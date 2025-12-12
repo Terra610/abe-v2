@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "rule_private_driver_treated_as_commercial",
+      "description": "State applies commercial motor carrier rules or DOT authority to a private, non-commercial driver.",
+      "triggers": {
+        "case_type": ["traffic"],
+        "movement_scope": ["private"],
+        "keywords_in_law_block": ["FMCSR", "49 C.F.R.", "commercial motor vehicle", "motor carrier"]
+      },
+      "doctrine_refs": [
+        "supremacy_clause",
+        "preemption_field",
+        "ultra_vires_state",
+        "freedom_of_movement"
+      ]
+    },
+    {
+      "id": "rule_grant_incentive_overreach",
+      "description": "State enforcement appears designed to satisfy grant metrics rather than lawful authority.",
+      "triggers": {
+        "funding_program_ids": ["mcsap", "nhtsa_402"],
+        "severity_min": "medium"
+      },
+      "doctrine_refs": [
+        "preemption_conflict",
+        "due_process_substantive",
+        "section_1983_remedy"
+      ]
+    }
+  ]
+}
