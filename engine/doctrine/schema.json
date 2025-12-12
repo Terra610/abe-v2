@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_Doctrine_v1",
+  "description": "Mapping of the audit to constitutional and Supreme Court–style doctrines.",
+  "type": "object",
+  "required": [
+    "jurisdiction",
+    "law_category",
+    "inputs",
+    "doctrines",
+    "summary"
+  ],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "law_category": {
+      "type": "string",
+      "enum": [
+        "driver_licensing",
+        "vehicle_registration",
+        "insurance",
+        "implied_consent",
+        "dwi_dui_owi",
+        "commercial_transport",
+        "fmcsr_adoption",
+        "other"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "tier1_status": { "type": "string" },
+        "tier2_scope_status": { "type": "string" },
+        "tier3_preemption_status": { "type": "string" },
+        "tier4_const_status": { "type": "string" },
+        "funding_risk": { "type": "string" },
+        "driver_type": { "type": "string" }
+      }
+    },
+    "doctrines": {
+      "type": "object",
+      "required": ["applied", "implicated", "notes"],
+      "properties": {
+        "applied": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "implicated": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["user_friendly", "technical"],
+      "properties": {
+        "user_friendly": { "type": "string" },
+        "technical": { "type": "string" }
+      }
+    }
+  }
+}
