@@ -29,6 +29,8 @@
     footer{text-align:center;margin:2rem 0;color:var(--muted);
       font-size:.85rem;}
   </style>
+  <!-- Load the doctrine engine core -->
+  <script src="../core/doctrine.js"></script>
 </head>
 <body>
 <header>
@@ -37,25 +39,24 @@
 </header>
 
 <div class="wrap">
-  <p>This is your **audit export block**.  
+  <p>This is your <strong>audit export block</strong>.  
      Save this text somewhere safe.  
-     To verify integrity later, you will compute a SHA-256 hash of this block  
-     and compare it using the Verify page.</p>
+     The doctrine analysis inside shows which federal doctrines and funding rules were triggered.</p>
 
   <textarea id="exportBlock" readonly></textarea>
 
-  <a class="btn" href="../verify/index.html">Go to Verify & Hash Check →</a>
+  <a class="btn" href="../verify/index.html">Go to Verify &amp; Hash Check →</a>
 
   <p style="margin-top:.9rem;font-size:.85rem;">
     Tip: copy this JSON into a file before you leave this page.  
-    Later, you can paste it into the Verify page along with your recorded hash.
+    Later, you can hash this block and use the Verify page to confirm it was never altered.
   </p>
 </div>
 
 <footer>© 2025 Terra Dawn Shouse — A.B.E. Engine</footer>
 
 <script>
-(function() {
+(async function() {
   const st = localStorage.getItem('abe_state') || 'Unknown';
   document.getElementById('stateTag').textContent = 'Audit State: ' + st;
 
@@ -71,6 +72,20 @@
       catch(e){ return null; }
     })()
   };
+
+  // Plug in the doctrine engine and attach the analysis
+  try {
+    if (window.ABE && typeof window.ABE.buildDoctrineEngine === "function") {
+      const engine = await window.ABE.buildDoctrineEngine(st);
+      const analysis = engine.evaluateAudit(payload);
+      payload.doctrine_analysis = analysis;
+    } else {
+      console.warn("A.B.E doctrine engine not available on window.ABE.");
+    }
+  } catch (e) {
+    console.error("Error running doctrine engine:", e);
+    payload.doctrine_analysis_error = String(e);
+  }
 
   document.getElementById('exportBlock').value =
     JSON.stringify(payload, null, 2);
