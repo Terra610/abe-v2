@@ -1,0 +1,64 @@
+{
+  "version": "1.0",
+  "constitutional_hooks": {
+    "supremacy": "Article VI, Supremacy Clause",
+    "enumerated_powers": "Articles I–III, enumerated powers and separation of powers",
+    "tenth_ninth": "Ninth and Tenth Amendments — retained rights and reserved powers",
+    "fourth": "Fourth Amendment — unreasonable searches and seizures",
+    "fifth": "Fifth Amendment — due process and self-incrimination",
+    "fourteenth": "Fourteenth Amendment — due process and equal protection"
+  },
+  "grounds_labels": {
+    "federal_preemption": "Conflicts with or obstructs federal law (preemption).",
+    "no_commercial_nexus": "Applies commercial frameworks without a commercial nexus.",
+    "ultra_vires_power": "Exceeds delegated statutory or constitutional power.",
+    "rights_infringement": "Infringes retained or enumerated rights.",
+    "funding_misuse": "Enforcement pattern appears tied to misaligned federal funding.",
+    "structural_incoherence": "Conflicts with the constitutional structure or jurisdictional design.",
+    "commercial_fiction": "Recasts private conduct as commercial to justify regulation."
+  },
+  "rules": [
+    {
+      "id": "g1_preemption",
+      "condition": "tier3_preemption_status != 'no_preemption_issue'",
+      "add_grounds": ["federal_preemption"],
+      "add_hooks": ["supremacy"]
+    },
+    {
+      "id": "g2_no_commercial_nexus",
+      "condition": "tier2_scope_status == 'beyond_scope'",
+      "add_grounds": ["no_commercial_nexus", "commercial_fiction"],
+      "add_hooks": ["tenth_ninth"]
+    },
+    {
+      "id": "g3_ultra_vires",
+      "condition": "tier1_status == 'ultra_vires'",
+      "add_grounds": ["ultra_vires_power", "structural_incoherence"],
+      "add_hooks": ["enumerated_powers", "supremacy"]
+    },
+    {
+      "id": "g4_const_overreach",
+      "condition": "tier4_const_status == 'over_reach' || tier4_const_status == 'rights_infringing'",
+      "add_grounds": ["rights_infringement"],
+      "add_hooks": ["tenth_ninth", "fourth", "fourteenth"]
+    },
+    {
+      "id": "g5_const_void",
+      "condition": "tier4_const_status == 'void_ab_initio'",
+      "add_grounds": ["rights_infringement", "structural_incoherence"],
+      "add_hooks": ["supremacy", "tenth_ninth", "fourth", "fourteenth"]
+    },
+    {
+      "id": "g6_funding_high",
+      "condition": "funding_risk == 'high'",
+      "add_grounds": ["funding_misuse"],
+      "add_hooks": ["supremacy"]
+    },
+    {
+      "id": "g7_commercial_fiction_private",
+      "condition": "driver_type == 'private' && (law_category == 'fmcsr_adoption' || law_category == 'commercial_transport')",
+      "add_grounds": ["commercial_fiction", "structural_incoherence"],
+      "add_hooks": ["tenth_ninth"]
+    }
+  ]
+}
