@@ -13,158 +13,256 @@
               onclick="window.location.href='upload.html'">
         ← Back to Intake
       </button>
-      <h1>Audit Results</h1>
+      <h1>A.B.E. Audit Results</h1>
       <p class="abe-lead">
-        This page shows the law & preemption audit for your saved intake,
-        calculated locally in your browser.
+        Local-only constitutional, funding, doctrine, and validity audit for your scenario.
       </p>
     </div>
   </header>
 
-  <main class="abe-wrap">
+  <main class="abe-wrap" style="margin-bottom:3rem;">
+    <!-- Status / meta -->
     <section class="abe-panel">
       <p id="result-status" class="abe-note">
-        Loading audit… (make sure you saved an Intake first)
+        Loading engine outputs… (make sure you completed the intake first)
       </p>
+      <p id="meta-line" class="abe-note"></p>
     </section>
 
-    <section class="abe-panel" id="summary-panel" style="margin-top:1rem;display:none;">
-      <h2>Summary</h2>
-      <p id="summary-text"></p>
-      <p class="abe-note"><strong>Risk flags:</strong> <span id="summary-flags"></span></p>
+    <!-- Scorecard -->
+    <section class="abe-panel" id="score-panel" style="margin-top:1rem;display:none;">
+      <h2>Constitutional Fidelity Scorecard</h2>
+      <p><strong>Band:</strong> <span id="score-band"></span></p>
+      <p>
+        <strong>Fidelity:</strong> <span id="score-fidelity"></span> / 100 &nbsp; |
+        <strong>Divergence:</strong> <span id="score-divergence"></span> / 100
+      </p>
+      <p id="score-summary"></p>
     </section>
 
-    <section class="abe-panel" id="tier1-panel" style="margin-top:1rem;display:none;">
-      <h2>Tier 1 — Federal Alignment</h2>
+    <!-- Law audit tiers -->
+    <section class="abe-panel" id="tier-panel" style="margin-top:1rem;display:none;">
+      <h2>Law & Preemption Audit (4 Tiers)</h2>
+
+      <h3>Tier 1 — Federal Alignment</h3>
       <p><strong>Status:</strong> <span id="tier1-status"></span></p>
       <p id="tier1-notes"></p>
-    </section>
 
-    <section class="abe-panel" id="tier2-panel" style="margin-top:1rem;display:none;">
-      <h2>Tier 2 — Scope & Commercial Nexus</h2>
+      <h3>Tier 2 — Scope & Commercial Nexus</h3>
       <p><strong>Status:</strong> <span id="tier2-status"></span></p>
       <p id="tier2-notes"></p>
-    </section>
 
-    <section class="abe-panel" id="tier3-panel" style="margin-top:1rem;display:none;">
-      <h2>Tier 3 — Federal Preemption</h2>
+      <h3>Tier 3 — Federal Preemption</h3>
       <p><strong>Status:</strong> <span id="tier3-status"></span></p>
       <p id="tier3-notes"></p>
-    </section>
 
-    <section class="abe-panel" id="tier4-panel" style="margin-top:1rem;display:none;">
-      <h2>Tier 4 — Constitutional Posture</h2>
+      <h3>Tier 4 — Constitutional Posture</h3>
       <p><strong>Status:</strong> <span id="tier4-status"></span></p>
       <p id="tier4-notes"></p>
     </section>
-    
+
+    <!-- Funding audit -->
     <section class="abe-panel" id="funding-panel" style="margin-top:1rem;display:none;">
-      <h2>Funding & FCA Audit</h2>
+      <h2>Funding & FCA Risk Audit</h2>
       <p><strong>Risk level:</strong> <span id="fund-risk"></span></p>
       <p><strong>Theories:</strong> <span id="fund-theories"></span></p>
       <p id="fund-notes"></p>
     </section>
 
-    <section class="abe-panel" id="raw-panel" style="margin-top:1rem;display:none;">
-      <h2>Technical Snapshot (JSON)</h2>
-      <pre id="raw-json" style="white-space:pre-wrap;font-size:0.8rem;"></pre>
+    <!-- Doctrine map -->
+    <section class="abe-panel" id="doctrine-panel" style="margin-top:1rem;display:none;">
+      <h2>Doctrine Map</h2>
+      <p><strong>Applied doctrines:</strong> <span id="doc-applied"></span></p>
+      <p><strong>Implicated doctrines:</strong> <span id="doc-implicated"></span></p>
+      <pre id="doc-notes" style="white-space:pre-wrap;font-size:0.85rem;"></pre>
+    </section>
+
+    <!-- Validity / void ab initio -->
+    <section class="abe-panel" id="validity-panel" style="margin-top:1rem;display:none;">
+      <h2>Validity / Void ab Initio Assessment</h2>
+      <p><strong>Status:</strong> <span id="val-status"></span></p>
+      <p><strong>Grounds:</strong> <span id="val-grounds"></span></p>
+      <p><strong>Constitutional hooks:</strong> <span id="val-hooks"></span></p>
+      <h3>Recommended Actions</h3>
+      <ul id="val-actions"></ul>
+      <p id="val-summary"></p>
+    </section>
+
+    <!-- Export bundle (raw JSON view) -->
+    <section class="abe-panel" id="export-panel" style="margin-top:1rem;display:none;">
+      <h2>Export Bundle (Raw JSON)</h2>
+      <p class="abe-note">
+        This is the consolidated engine output (law, funding, doctrine, scorecard, validity).
+        You can copy it for your records or to share with counsel.
+      </p>
+      <pre id="export-json" style="white-space:pre-wrap;font-size:0.75rem;max-height:18rem;overflow:auto;"></pre>
     </section>
   </main>
 
-  <!-- Engine modules: classify + law_audit -->
+  <!-- Engine modules (run on DOMContentLoaded) -->
   <script src="../engine/classify/classify.js"></script>
   <script src="../engine/law_audit/law_audit.js"></script>
   <script src="../engine/funding_audit/funding_audit.js"></script>
+  <script src="../engine/doctrine/doctrine.js"></script>
+  <script src="../engine/scorecard/scorecard.js"></script>
+  <script src="../engine/export/export.js"></script>
+  <script src="../engine/validity/validity.js"></script>
 
-  <!-- Simple renderer that waits for ABE_LawAudit in localStorage -->
-  <const LAWAUDIT_KEY = "ABE_LawAudit";
-      const FUNDING_KEY = "ABE_FundingAudit";
+  <!-- Renderer: polls localStorage until engine modules finish -->
+  <script>
+    (function () {
+      const LAW_KEY = "ABE_LawAudit";
+      const FUND_KEY = "ABE_FundingAudit";
+      const DOC_KEY = "ABE_Doctrine";
+      const SCORE_KEY = "ABE_Scorecard";
+      const EXPORT_KEY = "ABE_Export";
+      const VALIDITY_KEY = "ABE_Validity";
 
       function $(id) { return document.getElementById(id); }
 
-      function render(audit) {
+      function renderAll(law, fund, doc, score, validity, exp) {
         const statusEl = $("result-status");
-        const summaryPanel = $("summary-panel");
-        const tier1Panel = $("tier1-panel");
-        const tier2Panel = $("tier2-panel");
-        const tier3Panel = $("tier3-panel");
-        const tier4Panel = $("tier4-panel");
-        const rawPanel = $("raw-panel");
+        const metaEl = $("meta-line");
 
-        if (!audit) {
+        if (!law || !score) {
           if (statusEl) {
             statusEl.textContent =
-              "No audit found. Make sure you completed the Intake step first.";
+              "No complete audit found. Make sure you saved an intake session first.";
           }
           return;
         }
 
         if (statusEl) statusEl.textContent = "Audit complete.";
+        const state =
+          (law.jurisdiction && law.jurisdiction.state) || "Unknown";
+        const category =
+          (law.law_reference && law.law_reference.category) || "other";
+        if (metaEl) {
+          metaEl.textContent =
+            "Jurisdiction: " + state + " | Category: " + category;
+        }
 
-        if (summaryPanel) summaryPanel.style.display = "block";
-        if (tier1Panel) tier1Panel.style.display = "block";
-        if (tier2Panel) tier2Panel.style.display = "block";
-        if (tier3Panel) tier3Panel.style.display = "block";
-        if (tier4Panel) tier4Panel.style.display = "block";
-        if (rawPanel) rawPanel.style.display = "block";
+        // Scorecard
+        if (score && score.scores) {
+          $("score-panel").style.display = "block";
+          $("score-band").textContent = score.scores.band_label || "";
+          $("score-fidelity").textContent = score.scores.fidelity_score ?? "";
+          $("score-divergence").textContent = score.scores.divergence_score ?? "";
+          $("score-summary").textContent =
+            (score.summary && score.summary.user_friendly) || "";
+        }
 
-        const s = audit.summary || {};
-        $("summary-text").textContent = s.user_friendly || "";
-        $("summary-flags").textContent = (s.risk_flags || []).join(", ") || "none";
+        // Law audit tiers
+        if (law && law.audit_checks) {
+          $("tier-panel").style.display = "block";
+          const c = law.audit_checks;
+          const t1 = c.tier1_federal_alignment || {};
+          const t2 = c.tier2_scope_and_nexus || {};
+          const t3 = c.tier3_preemption || {};
+          const t4 = c.tier4_constitutional || {};
 
-        const c = audit.audit_checks || {};
-        const t1 = c.tier1_federal_alignment || {};
-        const t2 = c.tier2_scope_and_nexus || {};
-        const t3 = c.tier3_preemption || {};
-        const t4 = c.tier4_constitutional || {};
+          $("tier1-status").textContent = t1.status || "";
+          $("tier1-notes").textContent = t1.notes || "";
 
-        $("tier1-status").textContent = t1.status || "";
-        $("tier1-notes").textContent = t1.notes || "";
+          $("tier2-status").textContent = t2.scope_status || "";
+          $("tier2-notes").textContent = t2.notes || "";
 
-        const t2Status = t2.scope_status || "";
-        $("tier2-status").textContent = t2Status;
-        $("tier2-notes").textContent = t2.notes || "";
+          $("tier3-status").textContent = t3.status || "";
+          $("tier3-notes").textContent = t3.notes || "";
 
-        $("tier3-status").textContent = t3.status || "";
-        $("tier3-notes").textContent = t3.notes || "";
+          $("tier4-status").textContent = t4.status || "";
+          $("tier4-notes").textContent = t4.notes || "";
+        }
 
-        $("tier4-status").textContent = t4.status || "";
-        $("tier4-notes").textContent = t4.notes || "";
+        // Funding
+        if (fund && fund.assessment) {
+          $("funding-panel").style.display = "block";
+          $("fund-risk").textContent = fund.assessment.risk_level || "unknown";
+          $("fund-theories").textContent =
+            (fund.assessment.theories || []).join(", ") || "none";
+          $("fund-notes").textContent = fund.assessment.notes || "";
+        }
 
-        $("raw-json").textContent = JSON.stringify(audit, null, 2);
+        // Doctrine
+        if (doc && doc.doctrines) {
+          $("doctrine-panel").style.display = "block";
+          $("doc-applied").textContent =
+            (doc.doctrines.applied || []).join(", ") || "none";
+          $("doc-implicated").textContent =
+            (doc.doctrines.implicated || []).join(", ") || "none";
+          $("doc-notes").textContent = doc.doctrines.notes || "";
+        }
+
+        // Validity
+        if (validity && validity.validity) {
+          $("validity-panel").style.display = "block";
+          const v = validity.validity;
+          $("val-status").textContent = v.status || "unknown";
+          $("val-grounds").textContent =
+            (v.grounds || []).join(", ") || "none";
+          $("val-hooks").textContent =
+            (v.constitutional_hooks || []).join(", ") || "none";
+
+          const actionsEl = $("val-actions");
+          actionsEl.innerHTML = "";
+          (v.recommended_actions || []).forEach(function (a) {
+            const li = document.createElement("li");
+            li.textContent = a;
+            actionsEl.appendChild(li);
+          });
+
+          $("val-summary").textContent =
+            (validity.summary && validity.summary.user_friendly) || "";
+        }
+
+        // Export bundle (raw JSON)
+        if (exp && exp.export_bundle && exp.export_bundle.json) {
+          $("export-panel").style.display = "block";
+          $("export-json").textContent = exp.export_bundle.json;
+        }
       }
 
       function tryLoad(attempt) {
         const statusEl = $("result-status");
+
+        let law = null, fund = null, doc = null, score = null, validity = null, exp = null;
+
         try {
-          const raw = localStorage.getItem(LAWAUDIT_KEY);
-          if (raw) {
-            const audit = JSON.parse(raw);
-            render(audit);
-            return;
-          }
+          law = JSON.parse(localStorage.getItem(LAW_KEY) || "null");
+          score = JSON.parse(localStorage.getItem(SCORE_KEY) || "null");
+          fund = JSON.parse(localStorage.getItem(FUND_KEY) || "null");
+          doc = JSON.parse(localStorage.getItem(DOC_KEY) || "null");
+          validity = JSON.parse(localStorage.getItem(VALIDITY_KEY) || "null");
+          exp = JSON.parse(localStorage.getItem(EXPORT_KEY) || "null");
         } catch (e) {
-          console.error("Error reading ABE_LawAudit:", e);
-          if (statusEl) statusEl.textContent = "Error reading audit from local storage.";
+          console.error("Error reading engine outputs:", e);
+          if (statusEl) {
+            statusEl.textContent = "Error reading audit data from local storage.";
+          }
           return;
         }
 
-        if (attempt < 20) {
+        // We require at least law + scorecard to consider it "ready"
+        if (law && score) {
+          renderAll(law, fund, doc, score, validity, exp);
+          return;
+        }
+
+        if (attempt < 30) {
           if (statusEl) {
-            statusEl.textContent = "Running audit… (attempt " + (attempt + 1) + ")";
+            statusEl.textContent =
+              "Running engine… (attempt " + (attempt + 1) + " of 30)";
           }
           setTimeout(function () { tryLoad(attempt + 1); }, 150);
         } else {
           if (statusEl) {
             statusEl.textContent =
-              "No law audit found after multiple attempts. Make sure Intake was saved.";
+              "No completed audit found after multiple attempts. Make sure Intake was saved.";
           }
         }
       }
 
       document.addEventListener("DOMContentLoaded", function () {
-        // classify.js and law_audit.js both hook DOMContentLoaded too.
-        // We just poll for the result in localStorage.
         tryLoad(0);
       });
     })();
