@@ -28,6 +28,10 @@
     a{color:var(--link);}
     footer{text-align:center;margin:2rem 0;color:var(--muted);
       font-size:.85rem;}
+    .summary-title{margin-top:1.5rem;font-weight:600;font-size:1rem;}
+    .summary-body{margin-top:.4rem;font-size:.9rem;color:var(--muted);line-height:1.5;}
+    .summary-body ul{padding-left:1.2rem;margin:.3rem 0;}
+    .summary-body li{margin:.15rem 0;}
   </style>
   <!-- Load the doctrine engine core -->
   <script src="../core/doctrine.js"></script>
@@ -41,21 +45,107 @@
 <div class="wrap">
   <p>This is your <strong>audit export block</strong>.  
      Save this text somewhere safe.  
-     The doctrine analysis inside shows which federal doctrines and funding rules were triggered.</p>
+     Below it, you’ll see a <strong>plain-language summary</strong> of what the engine found.</p>
 
   <textarea id="exportBlock" readonly></textarea>
+
+  <div id="summaryBox">
+    <div class="summary-title">Plain-Language Summary</div>
+    <div class="summary-body" id="summaryBody">
+      Generating summary from doctrine analysis…
+    </div>
+  </div>
 
   <a class="btn" href="../verify/index.html">Go to Verify &amp; Hash Check →</a>
 
   <p style="margin-top:.9rem;font-size:.85rem;">
-    Tip: copy this JSON into a file before you leave this page.  
-    Later, you can hash this block and use the Verify page to confirm it was never altered.
+    Tip: copy this JSON and the summary into a file before you leave this page.  
+    You can hash this block for court and use the summary directly in filings or outreach.
   </p>
 </div>
 
 <footer>© 2025 Terra Dawn Shouse — A.B.E. Engine</footer>
 
 <script>
+function summarizeAnalysis(payload) {
+  const a = payload.doctrine_analysis;
+  if (!a) {
+    return "No doctrine analysis was attached to this export. The engine could not complete the legal mapping for this run.";
+  }
+
+  const pieces = [];
+
+  const state = a.state || payload.state || "the state";
+  const sev = a.severity || "unknown";
+  const caseType = a.case_type || "case";
+
+  // 1. Opening line
+  pieces.push(
+    `This audit describes a ${sev.toUpperCase()}-severity ${caseType} in ${state}. ` +
+    `Based on the user inputs and the engine’s federal mappings, the system detected potential overreach by state actors.`
+  );
+
+  // 2. Movement scope
+  const scope = a.movement_scope || "private";
+  if (scope === "private") {
+    pieces.push(
+      "The engine classified this as a private, non-commercial movement scenario, " +
+      "meaning the person was not acting as a motor carrier or commercial driver."
+    );
+  } else {
+    pieces.push(
+      "The engine detected commercial indicators in the law block or facts, " +
+      "suggesting the state may have treated this as a commercial transportation scenario."
+    );
+  }
+
+  // 3. Funding programs
+  if (Array.isArray(a.funding_programs) && a.funding_programs.length > 0) {
+    const names = a.funding_programs.map(p => p.name || p.id).join(", ");
+    pieces.push(
+      `The audit linked this enforcement to the following federal funding programs: ${names}. ` +
+      "These programs are intended for commercial or safety-focused enforcement, not for converting private citizens into commercial actors."
+    );
+  }
+
+  // 4. Preemption findings
+  if (Array.isArray(a.preemption_findings) && a.preemption_findings.length > 0) {
+    const doctrines = new Set();
+    a.preemption_findings.forEach(f => {
+      (f.doctrines || []).forEach(d => d && d.name && doctrines.add(d.name));
+    });
+
+    if (doctrines.size > 0) {
+      pieces.push(
+        "The engine flagged possible conflicts under key federal doctrines, including: " +
+        Array.from(doctrines).join(", ") + "."
+      );
+    } else {
+      pieces.push(
+        "The engine identified preemption concerns where state-law enforcement appears to conflict with federal limits or purposes."
+      );
+    }
+  }
+
+  // 5. Rights flags
+  if (Array.isArray(a.rights_flags) && a.rights_flags.length > 0) {
+    const hits = a.rights_flags.slice(0, 3).map(f =>
+      (f.statute ? f.statute + ": " : "") + (f.description || "Rights-impact flag")
+    );
+    pieces.push("Specific rights-impact flags were raised, including:");
+    pieces.push("• " + hits.join("\n• "));
+  }
+
+  // 6. Close-out
+  pieces.push(
+    "In plain terms, this export suggests that the state may be using commercial or funding-driven rules " +
+    "against a person who should be treated as a private citizen with full constitutional protections. " +
+    "The JSON block above preserves the detailed technical record for hashing, evidence, and legal review."
+  );
+
+  return pieces.join(" ");
+}
+
 (async function() {
   const st = localStorage.getItem('abe_state') || 'Unknown';
   document.getElementById('stateTag').textContent = 'Audit State: ' + st;
@@ -81,14 +171,26 @@
       payload.doctrine_analysis = analysis;
     } else {
       console.warn("A.B.E doctrine engine not available on window.ABE.");
+      payload.doctrine_analysis_error = "Doctrine engine not available on this page.";
     }
   } catch (e) {
     console.error("Error running doctrine engine:", e);
     payload.doctrine_analysis_error = String(e);
   }
 
+  // Render JSON
   document.getElementById('exportBlock').value =
     JSON.stringify(payload, null, 2);
+
+  // Render human summary
+  const summaryEl = document.getElementById('summaryBody');
+  if (payload.doctrine_analysis_error) {
+    summaryEl.textContent =
+      "The engine could not complete doctrine analysis: " +
+      payload.doctrine_analysis_error;
+  } else {
+    summaryEl.textContent = summarizeAnalysis(payload);
+  }
 })();
 </script>
 </body>
