@@ -3,12 +3,12 @@
     "id": "ABE",
     "name": "American Butterfly Effect",
     "version": "2.0.0",
-    "description": "Local-only constitutional, legal, and funding audit engine.",
+    "description": "Local-only constitutional, legal, funding, doctrine, and validity audit engine.",
     "modules": [
       {
         "id": "intake",
         "name": "Intake",
-            "version": "1.0.0",
+        "version": "1.0.0",
         "entry": "../engine/intake/intake.js",
         "status": "stable"
       },
@@ -45,14 +45,21 @@
         "name": "Fidelity Scorecard",
         "version": "1.0.0",
         "entry": "../engine/scorecard/scorecard.js",
-        "status": "planned"
+        "status": "stable"
       },
       {
         "id": "export",
         "name": "Export & Report",
         "version": "1.0.0",
         "entry": "../engine/export/export.js",
-        "status": "planned"
+        "status": "stable"
+      },
+      {
+        "id": "validity",
+        "name": "Validity / Void ab Initio",
+        "version": "1.0.0",
+        "entry": "../engine/validity/validity.js",
+        "status": "stable"
       }
     ]
   }
