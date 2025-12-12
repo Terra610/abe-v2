@@ -1,0 +1,51 @@
+{
+  "version": "1.0",
+  "programs": [
+    {
+      "id": "fmcsr_mcsap",
+      "name": "FMCSA Motor Carrier Safety Assistance Program (MCSAP-style)",
+      "type": "fmcsr_enforcement",
+      "intended_scope": "Commercial motor carrier safety and FMCSR enforcement.",
+      "uses_fmcsr_scope": true,
+      "expects_commercial_metrics": true,
+      "notes": "Funds are intended to support enforcement activities relevant to commercial motor carriers and FMCSR compliance."
+    },
+    {
+      "id": "highway_safety_402",
+      "name": "Highway Safety / Section 402-style funding",
+      "type": "general_highway_safety",
+      "intended_scope": "General highway safety programs including impaired driving, occupant safety, speed management.",
+      "uses_fmcsr_scope": false,
+      "expects_commercial_metrics": false,
+      "notes": "Often used to support impaired driving enforcement, checkpoints, and public safety campaigns."
+    },
+    {
+      "id": "highway_safety_405",
+      "name": "Highway Safety Incentive / Section 405-style programs",
+      "type": "incentive_safety",
+      "intended_scope": "Incentive grants for priority safety areas (impaired driving, occupant protection, etc.).",
+      "uses_fmcsr_scope": false,
+      "expects_commercial_metrics": false,
+      "notes": "States may be required to certify compliance with certain enforcement practices."
+    },
+    {
+      "id": "other_federal",
+      "name": "Other federal or pass-through safety funds",
+      "type": "other",
+      "intended_scope": "Other federal programs that may indirectly support traffic or safety enforcement.",
+      "uses_fmcsr_scope": false,
+      "expects_commercial_metrics": false,
+      "notes": "Catch-all for additional funding arrangements."
+    }
+  ],
+  "category_to_programs": {
+    "driver_licensing": ["other_federal"],
+    "vehicle_registration": ["other_federal"],
+    "insurance": ["other_federal"],
+    "implied_consent": ["highway_safety_402", "highway_safety_405"],
+    "dwi_dui_owi": ["highway_safety_402", "highway_safety_405"],
+    "commercial_transport": ["fmcsr_mcsap"],
+    "fmcsr_adoption": ["fmcsr_mcsap"],
+    "other": ["other_federal"]
+  }
+}
