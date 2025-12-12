@@ -1,0 +1,331 @@
+{
+  "version": "1.0",
+  "last_updated": "2025-12-12",
+  "notes": "Key federal definitions and concepts relevant to transportation, commerce, and DOT / FMCSA regulation. All text is paraphrased from public law and regulations.",
+  "definitions": {
+    "commerce_us_const": {
+      "id": "commerce_us_const",
+      "label": "Commerce (U.S. Constitutional sense)",
+      "category": "constitutional",
+      "source": "U.S. Constitution, art. I, § 8, cl. 3 and Supreme Court doctrine",
+      "citation": "U.S. Const. art. I, § 8, cl. 3",
+      "summary": "Commerce in the constitutional sense refers to trade and exchange of goods or services, and the transportation or communication that facilitates such trade, especially when it crosses state or national borders.",
+      "scope": {
+        "includes": [
+          "Interstate trade in goods and services",
+          "Transportation of goods and passengers as part of trade",
+          "Instrumentalities of interstate commerce (roads, vehicles, communications)"
+        ],
+        "excludes": [
+          "Purely private, non-commercial activities without substantial relation to trade or markets",
+          "Personal movement that is not part of a business or economic enterprise"
+        ]
+      }
+    },
+
+    "transportation_49usc": {
+      "id": "transportation_49usc",
+      "label": "Transportation (Federal statute context)",
+      "category": "statutory",
+      "source": "49 U.S.C. title 49 definitions",
+      "citation": "49 U.S.C. § 13102 and related sections",
+      "summary": "In federal transportation law, transportation generally covers the movement of passengers or property, by vehicle or other means, and services directly related to that movement, such as handling, storage, and interchange.",
+      "scope": {
+        "includes": [
+          "Movement of passengers or freight by motor vehicle, rail, water, or air",
+          "Loading, unloading, handling, and temporary storage related to that movement",
+          "Arranging and coordinating transport as part of a transportation service"
+        ],
+        "notes": [
+          "Many subparts of title 49 address transportation in the context of commerce and carriers, not private travel."
+        ]
+      }
+    },
+
+    "motor_vehicle_general": {
+      "id": "motor_vehicle_general",
+      "label": "Motor Vehicle (General federal usage)",
+      "category": "statutory",
+      "source": "Various federal statutes (e.g., highway safety, transportation)",
+      "citation": "e.g., 49 U.S.C. and 23 U.S.C. definitions",
+      "summary": "A self-propelled vehicle designed or used for operation on public roads. Specific programs may narrow this further (for example, by weight or use).",
+      "scope": {
+        "includes": [
+          "Cars, pickups, vans, SUVs",
+          "Trucks and buses",
+          "Other self-propelled road vehicles"
+        ],
+        "notes": [
+          "For enforcement programs, additional criteria such as weight, passenger capacity, or use in commerce can determine whether a vehicle is subject to specific federal rules."
+        ]
+      }
+    },
+
+    "commercial_motor_vehicle_fmcsa": {
+      "id": "commercial_motor_vehicle_fmcsa",
+      "label": "Commercial Motor Vehicle (FMCSA)",
+      "category": "regulatory",
+      "source": "Federal Motor Carrier Safety Regulations",
+      "citation": "49 C.F.R. § 390.5T (or successor definition section)",
+      "summary": "Under FMCSA rules, a commercial motor vehicle is a self-propelled or towed vehicle used on a highway in commerce to transport passengers or property, when certain weight, passenger, or hazardous materials thresholds are met.",
+      "criteria": {
+        "used_in_commerce": true,
+        "thresholds": [
+          "Vehicle or combination weight rating at or above approximately 10,001 pounds (exact numeric threshold set by regulation)",
+          "Vehicle used to transport a defined number of passengers for compensation",
+          "Vehicle used to transport a larger number of passengers without compensation",
+          "Vehicle transporting hazardous materials requiring placards under federal hazardous materials rules"
+        ]
+      },
+      "scope_notes": [
+        "The definition is tied to use in commerce, not merely to the physical existence of a motor vehicle.",
+        "Private personal use vehicles that do not meet these thresholds are generally outside FMCSA commercial motor vehicle scope."
+      ]
+    },
+
+    "motor_carrier": {
+      "id": "motor_carrier",
+      "label": "Motor Carrier",
+      "category": "regulatory",
+      "source": "FMCSA / title 49 definitions",
+      "citation": "49 U.S.C. § 13102; 49 C.F.R. § 390.5T",
+      "summary": "A motor carrier is an entity that provides motor vehicle transportation for compensation or in furtherance of a commercial enterprise. It can be a company, organization, or individual acting as a business carrier.",
+      "scope": {
+        "includes": [
+          "For-hire trucking companies",
+          "Private carriers hauling their own goods for business purposes",
+          "Bus companies transporting passengers as a business"
+        ],
+        "excludes": [
+          "Individuals driving their own vehicle for private, non-commercial reasons",
+          "Household personal trips not tied to a transportation business"
+        ]
+      }
+    },
+
+    "driver_fmcsa": {
+      "id": "driver_fmcsa",
+      "label": "Driver (FMCSA context)",
+      "category": "regulatory",
+      "source": "Federal Motor Carrier Safety Regulations",
+      "citation": "49 C.F.R. § 390.5T",
+      "summary": "For FMCSA purposes, a driver is any person who operates a commercial motor vehicle as defined in the regulations.",
+      "scope": {
+        "includes": [
+          "Employees or independent contractors who operate vehicles that meet the commercial motor vehicle definition"
+        ],
+        "excludes": [
+          "Persons driving only non-commercial vehicles that are outside the FMCSA commercial definition"
+        ],
+        "notes": [
+          "The FMCSA definition of driver is tied to the regulated vehicle class. It does not convert every private motorist into a commercial driver."
+        ]
+      }
+    },
+
+    "employee_fmcsa": {
+      "id": "employee_fmcsa",
+      "label": "Employee (FMCSA context)",
+      "category": "regulatory",
+      "source": "Federal Motor Carrier Safety Regulations",
+      "citation": "49 C.F.R. § 390.5T",
+      "summary": "In FMCSA rules, an employee is an individual employed by a motor carrier who, in the course of employment, directly affects commercial motor vehicle safety, including drivers and related safety-sensitive personnel.",
+      "scope": {
+        "includes": [
+          "Commercial drivers subject to FMCSA rules",
+          "Mechanics and other staff who directly impact vehicle safety"
+        ],
+        "excludes": [
+          "Members of the general public with no motor carrier employment relationship",
+          "Private citizens using a vehicle solely for personal purposes"
+        ]
+      }
+    },
+
+    "employer_fmcsa": {
+      "id": "employer_fmcsa",
+      "label": "Employer (FMCSA / DOT testing context)",
+      "category": "regulatory",
+      "source": "FMCSA and DOT drug and alcohol testing rules",
+      "citation": "49 C.F.R. parts 40 and 382",
+      "summary": "For DOT testing programs, an employer is the entity that employs safety-sensitive transportation workers, such as commercial drivers subject to DOT testing requirements.",
+      "scope": {
+        "includes": [
+          "Motor carriers that use commercial drivers in regulated transportation",
+          "Transit agencies or other transportation operators covered by DOT testing rules"
+        ],
+        "excludes": [
+          "Entities with no DOT-regulated transportation employees",
+          "Private individuals with no safety-sensitive employment relationship"
+        ]
+      }
+    },
+
+    "safety_sensitive_function_dot": {
+      "id": "safety_sensitive_function_dot",
+      "label": "Safety-Sensitive Function (DOT drug and alcohol rules)",
+      "category": "regulatory",
+      "source": "Office of Drug and Alcohol Policy and Compliance (ODAPC)",
+      "citation": "49 C.F.R. § 40.3 and modal regulations (e.g., 49 C.F.R. § 382.107)",
+      "summary": "Safety-sensitive functions are specific duties that directly affect the safe operation of transportation, such as operating a commercial motor vehicle, loading certain cargo, or being ready to drive.",
+      "scope": {
+        "includes": [
+          "Driving a commercial motor vehicle in commerce",
+          "Waiting to drive, inspecting, or repairing such vehicles in regulated service"
+        ],
+        "excludes": [
+          "Non-transportation jobs and everyday personal activities",
+          "Private citizens not employed in DOT safety-sensitive positions"
+        ]
+      }
+    },
+
+    "highway_federal": {
+      "id": "highway_federal",
+      "label": "Highway (Federal safety and motor carrier context)",
+      "category": "regulatory",
+      "source": "FMCSA and highway safety rules",
+      "citation": "49 C.F.R. § 390.5T and related provisions",
+      "summary": "A highway is a road or street that is publicly maintained and open to public travel.",
+      "scope": {
+        "includes": [
+          "Public roads, streets, and highways open to general traffic"
+        ],
+        "excludes": [
+          "Private driveways or roads not open to the general public",
+          "Non-road locations such as private fields or off-road property"
+        ]
+      }
+    },
+
+    "interstate_commerce_transport": {
+      "id": "interstate_commerce_transport",
+      "label": "Interstate Commerce (Transportation context)",
+      "category": "regulatory",
+      "source": "Title 49 and FMCSA",
+      "citation": "49 C.F.R. § 390.5T; 49 U.S.C. § 31132",
+      "summary": "Interstate commerce, for motor carrier rules, refers to transportation of passengers or property across state or national boundaries, or movements within a state that are part of a continuous interstate movement.",
+      "scope": {
+        "includes": [
+          "Trips crossing state lines with passengers or freight",
+          "Movements wholly within one state that are part of the flow of interstate trade"
+        ],
+        "excludes": [
+          "Isolated intrastate trips with no relation to interstate trade or traffic"
+        ]
+      }
+    },
+
+    "intrastate_commerce_transport": {
+      "id": "intrastate_commerce_transport",
+      "label": "Intrastate Commerce (Transportation context)",
+      "category": "regulatory",
+      "source": "State and federal transportation rules",
+      "citation": "Referenced in federal and state regulations",
+      "summary": "Transportation of passengers or property that occurs entirely within a single state and is not part of a continuous interstate movement, but still carried out for commercial purposes.",
+      "scope": {
+        "includes": [
+          "Commercial delivery or passenger services operating only inside one state"
+        ],
+        "notes": [
+          "States may regulate intrastate commercial carriers directly, but still must respect federal constitutional limits and any applicable federal conditions tied to funding."
+        ]
+      }
+    },
+
+    "private_motorist": {
+      "id": "private_motorist",
+      "label": "Private Motorist (Conceptual, not a codified term)",
+      "category": "concept",
+      "source": "Analytical category for A.B.E. engine",
+      "citation": null,
+      "summary": "A natural person using a motor vehicle for personal, family, or other non-commercial purposes, not acting as a motor carrier, commercial driver, or DOT-regulated employee.",
+      "scope": {
+        "includes": [
+          "Individuals driving to work, family events, medical appointments, or errands",
+          "Non-business personal travel with no freight or passengers for hire"
+        ],
+        "excludes": [
+          "Persons operating vehicles as part of a business or for compensation",
+          "Motor carrier employees performing safety-sensitive functions"
+        ]
+      },
+      "notes": [
+        "This category is used by the engine to separate constitutionally protected private movement from federally regulated commercial transportation."
+      ]
+    },
+
+    "driver_license_program_federal_view": {
+      "id": "driver_license_program_federal_view",
+      "label": "Driver Licensing Programs (Federal view)",
+      "category": "federal_program",
+      "source": "Highway safety and identification programs (e.g., 23 U.S.C., REAL ID Act)",
+      "citation": "23 U.S.C. highway safety provisions; REAL ID Act",
+      "summary": "Federal law encourages standardized driver licensing and identification for safety and security, but does not itself convert all movement into commercial activity or erase constitutional protections for travel and due process.",
+      "scope": {
+        "includes": [
+          "Federal minimum standards for state driver licenses used as identification",
+          "Safety-related conditions tied to certain grant programs"
+        ],
+        "notes": [
+          "Participation in these programs does not authorize states to ignore federal constitutional rights or to treat every licensed individual as a commercial motor carrier."
+        ]
+      }
+    },
+
+    "funding_program_mcsap": {
+      "id": "funding_program_mcsap",
+      "label": "Motor Carrier Safety Assistance Program (MCSAP)",
+      "category": "funding",
+      "source": "FMCSA grant program",
+      "citation": "49 U.S.C. § 31102 and implementing regulations",
+      "summary": "A federal grant program that funds state and local enforcement of commercial motor vehicle safety laws that are compatible with federal motor carrier regulations.",
+      "scope": {
+        "intended_use": [
+          "Roadside inspections and enforcement focused on commercial motor vehicles and motor carriers",
+          "Adoption and enforcement of compatible commercial safety laws"
+        ],
+        "constraints": [
+          "Does not expand state power over non-commercial private motorists beyond constitutional boundaries.",
+          "States are expected to align with FMCSA definitions and limits to maintain compatibility."
+        ]
+      }
+    },
+
+    "funding_program_nhtsa_402": {
+      "id": "funding_program_nhtsa_402",
+      "label": "Highway Safety Program Grants (Section 402)",
+      "category": "funding",
+      "source": "National Highway Traffic Safety Administration (NHTSA)",
+      "citation": "23 U.S.C. § 402",
+      "summary": "Federal grants to states to support highway safety programs aimed at reducing crashes, injuries, and deaths, subject to statutory and regulatory conditions.",
+      "scope": {
+        "intended_use": [
+          "Support for traffic safety campaigns and enforcement that comply with federal law and constitutional protections"
+        ],
+        "constraints": [
+          "Does not authorize unconstitutional stops, searches, or seizures.",
+          "Grant incentives cannot be used as justification for ignoring protected rights."
+        ]
+      }
+    },
+
+    "section_1983_rights": {
+      "id": "section_1983_rights",
+      "label": "Civil Rights Enforcement (42 U.S.C. § 1983)",
+      "category": "remedial",
+      "source": "Federal civil rights statute",
+      "citation": "42 U.S.C. § 1983",
+      "summary": "Provides a civil cause of action against state and local actors who, under color of law, deprive individuals of rights secured by the Constitution and federal statutes.",
+      "scope": {
+        "includes": [
+          "Challenges to unconstitutional arrests, detentions, and prosecutions",
+          "Claims based on violations of federal statutory rights, including those tied to funding and regulatory limits"
+        ],
+        "notes": [
+          "This definition anchors the remedial layer of the engine: when preemption and ultra vires findings stack up, § 1983 marks the path to damages and injunctive relief."
+        ]
+      }
+    }
+  }
+      }
