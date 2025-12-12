@@ -82,10 +82,10 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(intake));
       if (statusEl) {
         statusEl.textContent =
-          "Intake session saved locally. Next step will use this for legal, funding, and constitutional audits.";
+          "Intake session saved locally. Redirecting to results…";
       }
-      // Later, when results.html is ready, we can auto-redirect:
-      // window.location.href = "results.html";
+      // Send the user to the results page so classify + law_audit can run
+      window.location.href = "results.html";
     } catch (e) {
       console.error("Error saving intake:", e);
       if (statusEl) {
@@ -93,7 +93,6 @@
           "Could not save intake session (localStorage error).";
       }
     }
-  }
 
   document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("intake-form");
