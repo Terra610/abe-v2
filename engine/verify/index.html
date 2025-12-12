@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>A.B.E. — Verify Audit Receipt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../assets/abe.css" />
+
+  <style>
+    body {
+      background: var(--bg, #0b0d12);
+      color: var(--ink, #e6e8ee);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+    }
+    .verify-wrap {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: var(--panel, #151923);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .verify-wrap h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+    }
+    .verify-wrap p {
+      margin: 0.5rem 0;
+      color: var(--muted, #8fa2b7);
+      font-size: 0.95rem;
+    }
+    .verify-field {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .verify-field label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .verify-field textarea {
+      min-height: 120px;
+      resize: vertical;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 0.5rem 0.75rem;
+      background: #05070d;
+      color: #e6e8ee;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .verify-field input[type="text"] {
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 0.4rem 0.75rem;
+      background: #05070d;
+      color: #e6e8ee;
+      font-family: monospace;
+      font-size: 0.85rem;
+    }
+    .verify-field input[type="file"] {
+      font-size: 0.85rem;
+    }
+    .verify-actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .verify-btn {
+      background: var(--accent, #ffd857);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      padding: 0.6rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .verify-btn:hover {
+      box-shadow: 0 0 10px var(--accentGlow, #ffe892);
+    }
+    .verify-result {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .verify-result.ok {
+      color: #4bd28f;
+    }
+    .verify-result.bad {
+      color: #f97373;
+    }
+    .verify-meta {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: var(--muted, #8fa2b7);
+      word-wrap: break-word;
+    }
+    .verify-meta code {
+      font-family: monospace;
+      font-size: 0.78rem;
+    }
+    .back-link {
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+    }
+    .back-link a {
+      color: var(--link, #5ddfff);
+      text-decoration: none;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="verify-wrap">
+    <div class="back-link">
+      ⬅ <a href="../index.html">Back to A.B.E. engine home</a>
+    </div>
+
+    <h1>Verify Audit Receipt (SHA-256)</h1>
+    <p>
+      Use this tool to confirm that an A.B.E. audit output or receipt has not been altered
+      since the hash was generated. All verification is local-only and never leaves your device.
+    </p>
+
+    <form id="verify-form">
+      <div class="verify-field">
+        <label for="audit-text">Audit content (optional if uploading a file)</label>
+        <textarea id="audit-text" placeholder="Paste the exact JSON or text that was hashed when the receipt was created."></textarea>
+        <p class="verify-meta">
+          If you prefer, leave this blank and upload the original file instead.
+        </p>
+      </div>
+
+      <div class="verify-field">
+        <label for="audit-file">Audit file (optional)</label>
+        <input id="audit-file" type="file" />
+        <p class="verify-meta">
+          If a file is selected, it takes priority over the pasted text.
+        </p>
+      </div>
+
+      <div class="verify-field">
+        <label for="expected-hash">Recorded SHA-256 hash</label>
+        <input
+          id="expected-hash"
+          type="text"
+          placeholder="Paste the SHA-256 hash from the audit receipt (64 hex characters)."
+        />
+      </div>
+
+      <div class="verify-actions">
+        <button class="verify-btn" type="submit">Verify</button>
+      </div>
+    </form>
+
+    <div id="verify-result" class="verify-result"></div>
+    <div id="verify-computed-hash" class="verify-meta"></div>
+    <div id="verify-details" class="verify-meta"></div>
+
+    <div class="verify-meta" style="margin-top:1rem;">
+      This tool uses the browser's built-in Web Crypto API to compute a SHA-256 hash. Any party
+      (court, counsel, investigator, journalist) can recompute the hash independently to confirm
+      that the audit output has not been modified since the receipt was generated.
+    </div>
+  </div>
+
+  <script src="verify.js"></script>
+</body>
+</html>
