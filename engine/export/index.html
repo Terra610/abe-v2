@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <title>A.B.E. — Step 7: Export & Audit Receipt</title>
+  <title>A.B.E. — Step 7: Export & Audit Block</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root{--bg:#0b0d12;--panel:#141820;--ink:#e6e6e6;
@@ -16,14 +16,15 @@
     .wrap{max-width:800px;margin:1.5rem auto;padding:1.5rem;
       background:var(--panel);border-radius:12px;
       border:1px solid rgba(255,255,255,.08);}
-    textarea{width:100%;min-height:200px;margin-top:.5rem;
+    textarea{width:100%;min-height:220px;margin-top:.5rem;
       background:#0f131a;color:var(--ink);border-radius:8px;
       border:1px solid rgba(255,255,255,.12);padding:.75rem;
       font-family:monospace;font-size:.8rem;}
-    button{margin-top:1.2rem;background:var(--accent);color:#000;
+    .btn{margin-top:1.2rem;background:var(--accent);color:#000;
       padding:.75rem 1.4rem;border-radius:8px;border:none;
-      cursor:pointer;font-weight:600;font-size:1rem;}
-    button:hover{box-shadow:0 0 12px var(--accentGlow);}
+      cursor:pointer;font-weight:600;font-size:1rem;
+      text-decoration:none;display:inline-block;}
+    .btn:hover{box-shadow:0 0 12px var(--accentGlow);}
     a{color:var(--link);}
     footer{text-align:center;margin:2rem 0;color:var(--muted);
       font-size:.85rem;}
@@ -31,22 +32,23 @@
 </head>
 <body>
 <header>
-  <h1>Step 7 — Export & Audit Receipt</h1>
+  <h1>Step 7 — Export Audit Block</h1>
   <div class="state-tag" id="stateTag"></div>
 </header>
 
 <div class="wrap">
-  <p>This export block is what you **hash with SHA-256** and keep as your receipt.  
-     Paste it into your own hash tool, or use the Verify page later to match it.</p>
+  <p>This is your **audit export block**.  
+     Save this text somewhere safe.  
+     To verify integrity later, you will compute a SHA-256 hash of this block  
+     and compare it using the Verify page.</p>
 
   <textarea id="exportBlock" readonly></textarea>
 
-  <button onclick="goVerify()">Go to Verify & Hash Check →</button>
+  <a class="btn" href="../verify/index.html">Go to Verify & Hash Check →</a>
 
   <p style="margin-top:.9rem;font-size:.85rem;">
-    Tip: save this text in a safe place before closing the tab.  
-    Later you can paste it back into <a href="../verify/index.html">Verify</a>  
-    to confirm nothing was altered.
+    Tip: copy this JSON into a file before you leave this page.  
+    Later, you can paste it into the Verify page along with your recorded hash.
   </p>
 </div>
 
@@ -72,10 +74,6 @@
 
   document.getElementById('exportBlock').value =
     JSON.stringify(payload, null, 2);
-
-  window.goVerify = function() {
-    window.location.href = '../verify/index.html';
-  };
 })();
 </script>
 </body>
