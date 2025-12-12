@@ -1,1 +1,53 @@
-
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_Classify_v1",
+  "description": "Classification of driver type and scenario for downstream audits.",
+  "type": "object",
+  "required": ["driver_type", "cdl_status", "scenario", "flags"],
+  "properties": {
+    "driver_type": {
+      "type": "string",
+      "enum": ["private", "commercial_intrastate", "commercial_interstate"]
+    },
+    "cdl_status": {
+      "type": "string",
+      "enum": ["none", "has_cdl"]
+    },
+    "scenario": {
+      "type": "string",
+      "enum": [
+        "routine_stop",
+        "checkpoint",
+        "hearing",
+        "criminal_case",
+        "civil_case"
+      ]
+    },
+    "suspected_basis": {
+      "type": "string",
+      "enum": [
+        "licensing_only",
+        "impaired_driving",
+        "registration_insurance",
+        "commercial_compliance",
+        "unknown"
+      ]
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "private_driver_in_commercial_framework",
+          "cdl_holder_private_use",
+          "possible_fmcsr_misapplication",
+          "high_value_constitutional_issue"
+        ]
+      }
+    },
+    "source_intake_created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
