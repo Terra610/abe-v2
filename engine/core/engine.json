@@ -18,6 +18,13 @@
         "version": "1.0.0",
         "entry": "../engine/classify/classify.js",
         "status": "stable"
+      },
+      {
+        "id": "law_audit",
+        "name": "Law & Preemption Audit",
+        "version": "1.0.0",
+        "entry": "../engine/law_audit/law_audit.js",
+        "status": "stable"
       }
     ]
   }
