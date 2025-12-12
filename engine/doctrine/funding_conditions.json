@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "programs": [
+    {
+      "id": "mcsap",
+      "name": "FMCSA Motor Carrier Safety Assistance Program (MCSAP)",
+      "statutes": ["49 U.S.C. 31102"],
+      "description": "Grants to states to assist in commercial motor vehicle safety enforcement.",
+      "intended_scope": "Commercial motor carriers, commercial drivers, interstate transportation in commerce.",
+      "constraints": [
+        "Does not authorize treating all private drivers as commercial motor carriers.",
+        "States must adopt and enforce compatible laws with Federal Motor Carrier Safety Regulations for covered commercial activities."
+      ]
+    },
+    {
+      "id": "nhtsa_402",
+      "name": "NHTSA Highway Safety Program Grants (Section 402)",
+      "statutes": ["23 U.S.C. 402"],
+      "description": "Highway safety grants to states for programs to reduce traffic deaths and injuries.",
+      "intended_scope": "Traffic safety programs consistent with federal law and constitutional protections.",
+      "constraints": [
+        "Does not authorize states to ignore Fourth and Fourteenth Amendment limits.",
+        "States may not use grant incentives to justify unconstitutional stops, searches, or arrests."
+      ]
+    }
+  ]
+}
