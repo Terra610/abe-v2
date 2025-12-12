@@ -1,0 +1,17 @@
+{
+  "engine": {
+    "id": "ABE",
+    "name": "American Butterfly Effect",
+    "version": "2.0.0",
+    "description": "Local-only constitutional, legal, and funding audit engine.",
+    "modules": [
+      {
+        "id": "intake",
+        "name": "Intake",
+        "version": "1.0.0",
+        "entry": "../engine/intake/intake.js",
+        "status": "stable"
+      }
+    ]
+  }
+}
