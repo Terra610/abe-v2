@@ -1,197 +1,42 @@
-<!doctype html>
-<html lang="en" data-theme="dark">
-<head>
-  <meta charset="utf-8">
-  <title>A.B.E. — Step 7: Export & Audit Block</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    :root{--bg:#0b0d12;--panel:#141820;--ink:#e6e6e6;
-      --muted:#9fb3c8;--accent:#ffd857;--accentGlow:#ffe892;
-      --link:#5ddfff;}
-    body{margin:0;background:var(--bg);color:var(--ink);
-      font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
-    header{padding:2rem 1.5rem;text-align:center;}
-    h1{margin:0 0 .5rem;font-size:2rem;}
-    .state-tag{color:var(--muted);font-size:.9rem;}
-    .wrap{max-width:800px;margin:1.5rem auto;padding:1.5rem;
-      background:var(--panel);border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);}
-    textarea{width:100%;min-height:220px;margin-top:.5rem;
-      background:#0f131a;color:var(--ink);border-radius:8px;
-      border:1px solid rgba(255,255,255,.12);padding:.75rem;
-      font-family:monospace;font-size:.8rem;}
-    .btn{margin-top:1.2rem;background:var(--accent);color:#000;
-      padding:.75rem 1.4rem;border-radius:8px;border:none;
-      cursor:pointer;font-weight:600;font-size:1rem;
-      text-decoration:none;display:inline-block;}
-    .btn:hover{box-shadow:0 0 12px var(--accentGlow);}
-    a{color:var(--link);}
-    footer{text-align:center;margin:2rem 0;color:var(--muted);
-      font-size:.85rem;}
-    .summary-title{margin-top:1.5rem;font-weight:600;font-size:1rem;}
-    .summary-body{margin-top:.4rem;font-size:.9rem;color:var(--muted);line-height:1.5;}
-    .summary-body ul{padding-left:1.2rem;margin:.3rem 0;}
-    .summary-body li{margin:.15rem 0;}
-  </style>
-  <!-- Load the doctrine engine core -->
-  <script src="../core/doctrine.js"></script>
-</head>
-<body>
-<header>
-  <h1>Step 7 — Export Audit Block</h1>
-  <div class="state-tag" id="stateTag"></div>
-</header>
-
-<div class="wrap">
-  <p>This is your <strong>audit export block</strong>.  
-     Save this text somewhere safe.  
-     Below it, you’ll see a <strong>plain-language summary</strong> of what the engine found.</p>
-
-  <textarea id="exportBlock" readonly></textarea>
-
-  <div id="summaryBox">
-    <div class="summary-title">Plain-Language Summary</div>
-    <div class="summary-body" id="summaryBody">
-      Generating summary from doctrine analysis…
-    </div>
-  </div>
-
-  <a class="btn" href="../verify/index.html">Go to Verify &amp; Hash Check →</a>
-
-  <p style="margin-top:.9rem;font-size:.85rem;">
-    Tip: copy this JSON and the summary into a file before you leave this page.  
-    You can hash this block for court and use the summary directly in filings or outreach.
-  </p>
-</div>
-
-<footer>© 2025 Terra Dawn Shouse — A.B.E. Engine</footer>
-
 <script>
-function summarizeAnalysis(payload) {
-  const a = payload.doctrine_analysis;
-  if (!a) {
-    return "No doctrine analysis was attached to this export. The engine could not complete the legal mapping for this run.";
-  }
-
-  const pieces = [];
-
-  const state = a.state || payload.state || "the state";
-  const sev = a.severity || "unknown";
-  const caseType = a.case_type || "case";
-
-  // 1. Opening line
-  pieces.push(
-    `This audit describes a ${sev.toUpperCase()}-severity ${caseType} in ${state}. ` +
-    `Based on the user inputs and the engine’s federal mappings, the system detected potential overreach by state actors.`
-  );
-
-  // 2. Movement scope
-  const scope = a.movement_scope || "private";
-  if (scope === "private") {
-    pieces.push(
-      "The engine classified this as a private, non-commercial movement scenario, " +
-      "meaning the person was not acting as a motor carrier or commercial driver."
-    );
-  } else {
-    pieces.push(
-      "The engine detected commercial indicators in the law block or facts, " +
-      "suggesting the state may have treated this as a commercial transportation scenario."
-    );
-  }
-
-  // 3. Funding programs
-  if (Array.isArray(a.funding_programs) && a.funding_programs.length > 0) {
-    const names = a.funding_programs.map(p => p.name || p.id).join(", ");
-    pieces.push(
-      `The audit linked this enforcement to the following federal funding programs: ${names}. ` +
-      "These programs are intended for commercial or safety-focused enforcement, not for converting private citizens into commercial actors."
-    );
-  }
-
-  // 4. Preemption findings
-  if (Array.isArray(a.preemption_findings) && a.preemption_findings.length > 0) {
-    const doctrines = new Set();
-    a.preemption_findings.forEach(f => {
-      (f.doctrines || []).forEach(d => d && d.name && doctrines.add(d.name));
-    });
-
-    if (doctrines.size > 0) {
-      pieces.push(
-        "The engine flagged possible conflicts under key federal doctrines, including: " +
-        Array.from(doctrines).join(", ") + "."
-      );
-    } else {
-      pieces.push(
-        "The engine identified preemption concerns where state-law enforcement appears to conflict with federal limits or purposes."
-      );
-    }
-  }
-
-  // 5. Rights flags
-  if (Array.isArray(a.rights_flags) && a.rights_flags.length > 0) {
-    const hits = a.rights_flags.slice(0, 3).map(f =>
-      (f.statute ? f.statute + ": " : "") + (f.description || "Rights-impact flag")
-    );
-    pieces.push("Specific rights-impact flags were raised, including:");
-    pieces.push("• " + hits.join("\n• "));
-  }
-
-  // 6. Close-out
-  pieces.push(
-    "In plain terms, this export suggests that the state may be using commercial or funding-driven rules " +
-    "against a person who should be treated as a private citizen with full constitutional protections. " +
-    "The JSON block above preserves the detailed technical record for hashing, evidence, and legal review."
-  );
-
-  return pieces.join(" ");
-}
-
-(async function() {
-  const st = localStorage.getItem('abe_state') || 'Unknown';
-  document.getElementById('stateTag').textContent = 'Audit State: ' + st;
-
-  const payload = {
-    version: "ABE-intake-v1",
-    timestamp: new Date().toISOString(),
-    state: st,
-    case_type: localStorage.getItem('abe_case_type') || null,
-    severity: localStorage.getItem('abe_severity') || null,
-    laws: localStorage.getItem('abe_law_block') || null,
-    funding: (() => {
-      try { return JSON.parse(localStorage.getItem('abe_funding') || 'null'); }
-      catch(e){ return null; }
-    })()
+(async function () {
+  // 1. Collect all stored audit data
+  const audit = {
+    state: localStorage.getItem('abe_state'),
+    case_type: localStorage.getItem('abe_case_type'),
+    law_analysis: localStorage.getItem('abe_law_block'),
+    funding: localStorage.getItem('abe_funding'),
+    validity: localStorage.getItem('abe_validity'),
+    scorecard: localStorage.getItem('abe_scorecard')
   };
 
-  // Plug in the doctrine engine and attach the analysis
-  try {
-    if (window.ABE && typeof window.ABE.buildDoctrineEngine === "function") {
-      const engine = await window.ABE.buildDoctrineEngine(st);
-      const analysis = engine.evaluateAudit(payload);
-      payload.doctrine_analysis = analysis;
-    } else {
-      console.warn("A.B.E doctrine engine not available on window.ABE.");
-      payload.doctrine_analysis_error = "Doctrine engine not available on this page.";
-    }
-  } catch (e) {
-    console.error("Error running doctrine engine:", e);
-    payload.doctrine_analysis_error = String(e);
+  // 2. Convert audit to JSON
+  const jsonText = JSON.stringify(audit, null, 2);
+
+  // 3. Display the JSON in the textarea
+  document.getElementById('exportBlock').value = jsonText;
+
+  // 4. Generate SHA-256
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
-  // Render JSON
-  document.getElementById('exportBlock').value =
-    JSON.stringify(payload, null, 2);
+  const hash = await sha256(jsonText);
 
-  // Render human summary
-  const summaryEl = document.getElementById('summaryBody');
-  if (payload.doctrine_analysis_error) {
-    summaryEl.textContent =
-      "The engine could not complete doctrine analysis: " +
-      payload.doctrine_analysis_error;
-  } else {
-    summaryEl.textContent = summarizeAnalysis(payload);
-  }
+  // 5. Display SHA-256 hash to user
+  document.getElementById("hashOutput").textContent = hash;
+
+  // 6. Give user a copy button
+  document.getElementById("copyHash").onclick = () => {
+    navigator.clipboard.writeText(hash);
+    alert("Hash copied to clipboard!");
+  };
+
+  // 7. Save hash locally as backup
+  localStorage.setItem("abe_last_hash", hash);
+
 })();
 </script>
-</body>
-</html>
