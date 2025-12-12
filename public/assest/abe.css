@@ -1,0 +1,84 @@
+:root {
+  --bg: #050712;
+  --panel: #111520;
+  --ink: #e6e8f5;
+  --muted: #9aa4b9;
+  --accent: #ffd857;
+  --accent-soft: rgba(255, 216, 87, 0.18);
+  --border: rgba(255, 255, 255, 0.08);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #121825 0, #050712 55%);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+}
+
+.abe-wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+}
+
+.abe-header {
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+  background: radial-gradient(circle at top, #151b2b 0, #050712 55%);
+}
+
+.abe-header h1 {
+  margin: 0 0 0.4rem;
+  font-size: 1.9rem;
+}
+
+.abe-lead {
+  margin: 0 0 1rem;
+  color: var(--muted);
+  max-width: 40rem;
+}
+
+.abe-btn {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: linear-gradient(135deg, #30220f, #ffd857);
+  color: #1b1205;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+}
+
+.abe-btn:hover {
+  filter: brightness(1.03);
+}
+
+.abe-panel {
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.3rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: radial-gradient(circle at top left, #181f33 0, #090c15 55%);
+}
+
+.abe-panel h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.abe-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  border-left: 3px solid var(--accent);
+  padding-left: 0.6rem;
+  margin-top: 1rem;
+}
