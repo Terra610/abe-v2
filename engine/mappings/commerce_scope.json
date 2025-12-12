@@ -1,0 +1,25 @@
+{
+  "version": "1.0",
+  "definitions": [
+    {
+      "id": "commerce_federal",
+      "label": "Commercial Transportation (Federal)",
+      "description": "Transportation of passengers or property for compensation or in furtherance of a commercial enterprise, typically in interstate commerce.",
+      "signals": [
+        "For-hire carriage of goods or passengers",
+        "Use of commercial motor vehicle as defined by FMCSA",
+        "Business or corporate carriage tied to profit"
+      ]
+    },
+    {
+      "id": "movement_private",
+      "label": "Private Movement",
+      "description": "A natural person traveling for personal, family, or non-commercial purposes, not acting as a motor carrier or commercial operator.",
+      "signals": [
+        "No compensation for transport",
+        "Personal errands, commuting, family travel",
+        "No freight, no passengers for hire"
+      ]
+    }
+  ]
+}
