@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_IntakeSession_v2",
+  "description": "Schema for a single intake session in the A.B.E. v2 engine.",
+  "type": "object",
+  "required": ["jurisdiction", "event", "driver_context"],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string", "const": "United States" },
+        "state": { "type": "string" },
+        "county": { "type": "string" }
+      }
+    },
+
+    "event": {
+      "type": "object",
+      "required": ["type", "date"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "traffic_stop",
+            "checkpoint",
+            "hearing",
+            "criminal_case",
+            "civil_case"
+          ]
+        },
+        "date": { "type": "string", "format": "date" },
+        "notes": { "type": "string" }
+      }
+    },
+
+    "driver_context": {
+      "type": "object",
+      "required": ["vehicle_use", "has_cdl"],
+      "properties": {
+        "vehicle_use": {
+          "type": "string",
+          "enum": [
+            "personal",
+            "for_hire",
+            "intrastate_commercial",
+            "interstate_commercial"
+          ]
+        },
+        "has_cdl": { "type": "boolean" },
+        "officer_agency": { "type": "string" }
+      }
+    },
+
+    "statutes": {
+      "type": "array",
+      "description": "List of statutes or charges, as parsed from user input.",
+      "items": {
+        "type": "object",
+        "required": ["raw"],
+        "properties": {
+          "raw": { "type": "string" },
+          "citation": { "type": "string" },
+          "title": { "type": "string" }
+        }
+      }
+    },
+
+    "attachment": {
+      "type": "object",
+      "description": "Optional file info (but not file contents).",
+      "properties": {
+        "file_name": { "type": "string" },
+        "file_type": { "type": "string" }
+      }
+    },
+
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
