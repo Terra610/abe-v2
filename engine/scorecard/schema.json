@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_Scorecard_v1",
+  "description": "Overall constitutional fidelity and divergence scoring for the scenario.",
+  "type": "object",
+  "required": ["jurisdiction", "law_category", "inputs", "scores", "summary"],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "law_category": {
+      "type": "string",
+      "enum": [
+        "driver_licensing",
+        "vehicle_registration",
+        "insurance",
+        "implied_consent",
+        "dwi_dui_owi",
+        "commercial_transport",
+        "fmcsr_adoption",
+        "other"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "tier1_status": { "type": "string" },
+        "tier2_scope_status": { "type": "string" },
+        "tier3_preemption_status": { "type": "string" },
+        "tier4_const_status": { "type": "string" },
+        "funding_risk": { "type": "string" },
+        "doctrines_applied": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "doctrines_implicated": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": [
+        "fidelity_score",
+        "divergence_score",
+        "band",
+        "band_label"
+      ],
+      "properties": {
+        "fidelity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "divergence_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "band": {
+          "type": "string",
+          "enum": ["green", "yellow", "orange", "red"]
+        },
+        "band_label": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["user_friendly", "technical"],
+      "properties": {
+        "user_friendly": { "type": "string" },
+        "technical": { "type": "string" }
+      }
+    }
+  }
+}
