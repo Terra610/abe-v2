@@ -1,37 +1,131 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>A.B.E. — American Butterfly Effect</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="stylesheet" href="assets/abe.css" />
-</head>
-<body>
-  <header class="abe-header">
-    <div class="abe-wrap">
-      <h1>A.B.E. — American Butterfly Effect</h1>
-      <p class="abe-lead">
-        Local-only constitutional audit engine. No login, no server, no tracking.
-      </p>
-      <button class="abe-btn" onclick="window.location.href='upload.html'">
-        Start Audit — Upload Your Case
-      </button>
-    </div>
-  </header>
+    <meta charset="utf-8" />
+    <title>A.B.E. — American Butterfly Effect</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <main class="abe-wrap">
+    <!-- Your external stylesheet -->
+    <link rel="stylesheet" href="assets/abe.css" />
+
+    <!-- THEME VARIABLES -->
+    <style>
+      :root[data-theme="dark"] {
+        --bg: #0b0d12;
+        --panel: #151923;
+        --ink: #e6e8ee;
+        --muted: #8fa2b7;
+        --accent: #ffd857;
+        --accentGlow: #ffe892;
+        --link: #5ddfff;
+      }
+
+      :root[data-theme="light"] {
+        --bg: #f5f5f7;
+        --panel: #ffffff;
+        --ink: #111827;
+        --muted: #4b5563;
+        --accent: #1f6feb;
+        --accentGlow: #93c5fd;
+        --link: #1f6feb;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        margin: 0;
+        font-family: system-ui, sans-serif;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 9999;
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 999px;
+        padding: 6px 14px;
+        border: 1px solid rgba(255,255,255,0.15);
+        cursor: pointer;
+        font-size: 14px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .theme-toggle:hover {
+        box-shadow: 0 0 8px var(--accentGlow);
+      }
+    </style>
+</head>
+
+<body>
+
+<!-- THEME TOGGLE BUTTON -->
+<button id="theme-toggle" class="theme-toggle">
+  <span id="theme-toggle-icon">🌙</span>
+  <span id="theme-toggle-label">Dark mode</span>
+</button>
+
+<header class="abe-header">
+    <div class="abe-wrap">
+        <h1>A.B.E. — American Butterfly Effect</h1>
+        <p class="abe-lead">
+            Local-only constitutional audit engine for citizens.
+        </p>
+        <button class="abe-btn" onclick="window.location.href='engine/index.html'">
+            Start Audit — Upload Your Case
+        </button>
+    </div>
+</header>
+
+<main class="abe-wrap">
     <section class="abe-panel">
-      <h2>What this does</h2>
-      <p>
-        You answer a few questions about your stop or case. A.B.E. builds a
-        structured intake record in your browser only, ready for constitutional,
-        legal, and funding audits in the next steps.
-      </p>
-      <p class="abe-note">
-        Step 1: Intake only. No law results yet — we’re wiring the engine
-        module by module.
-      </p>
+        <h2>What this does</h2>
+        <p>
+            You answer a few questions and upload your documents. The engine builds a fully
+            structured intake record in your browser with no uploads — preparing legal,
+            economic, and funding audits in the next phases.
+        </p>
+        <p class="abe-note">
+            Step 1: Intake only. No law lookup yet — the system expands module by module.
+        </p>
     </section>
-  </main>
+</main>
+
+<!-- THEME SCRIPT -->
+<script>
+(function () {
+  const root = document.documentElement;
+  const toggle = document.getElementById('theme-toggle');
+  const icon = document.getElementById('theme-toggle-icon');
+  const label = document.getElementById('theme-toggle-label');
+
+  function applyTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('abe-theme', theme);
+
+    if (theme === 'dark') {
+      icon.textContent = '🌙';
+      label.textContent = 'Dark mode';
+    } else {
+      icon.textContent = '☀️';
+      label.textContent = 'Light mode';
+    }
+  }
+
+  // Load saved or default theme
+  const saved = localStorage.getItem('abe-theme');
+  applyTheme(saved ? saved : 'dark'); // DEFAULT IS DARK MODE
+
+  toggle.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+  });
+})();
+</script>
+
 </body>
 </html>
