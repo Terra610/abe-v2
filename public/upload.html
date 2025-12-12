@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>A.B.E. Intake — Step 1</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/abe.css" />
+</head>
+<body>
+  <header class="abe-header">
+    <div class="abe-wrap">
+      <button class="abe-btn" style="float:right;margin-top:.2rem"
+              onclick="window.location.href='index.html'">
+        ← Back to Home
+      </button>
+      <h1>Step 1 — Intake</h1>
+      <p class="abe-lead">
+        Tell A.B.E. what happened. This creates a structured Intake Session
+        stored only in your browser.
+      </p>
+    </div>
+  </header>
+
+  <main class="abe-wrap">
+    <section class="abe-panel">
+      <form id="intake-form">
+        <h2>Basic details</h2>
+
+        <label>
+          State<br />
+          <input type="text" name="state" placeholder="Iowa" required />
+        </label>
+        <br /><br />
+
+        <label>
+          County (optional)<br />
+          <input type="text" name="county" placeholder="Linn" />
+        </label>
+        <br /><br />
+
+        <label>
+          Date of stop / event<br />
+          <input type="date" name="date" required />
+        </label>
+        <br /><br />
+
+        <label>
+          Event type<br />
+          <select name="event_type" required>
+            <option value="traffic_stop">Traffic stop</option>
+            <option value="checkpoint">Checkpoint / roadblock</option>
+            <option value="hearing">Administrative / license hearing</option>
+            <option value="criminal_case">Criminal case</option>
+            <option value="civil_case">Civil case</option>
+          </select>
+        </label>
+        <br /><br />
+
+        <h2>Driver + vehicle context</h2>
+
+        <label>
+          Vehicle use at the time<br />
+          <select name="vehicle_use" required>
+            <option value="personal">Personal / private</option>
+            <option value="for_hire">For hire / transporting for pay</option>
+            <option value="intrastate_commercial">Intrastate commercial</option>
+            <option value="interstate_commercial">Interstate commercial</option>
+          </select>
+        </label>
+        <br /><br />
+
+        <label>
+          Do you hold a CDL?<br />
+          <select name="has_cdl" required>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </label>
+        <br /><br />
+
+        <label>
+          Officer / agency (optional)<br />
+          <input type="text" name="officer_agency"
+                 placeholder="Iowa DPS, State Patrol, City PD, etc." />
+        </label>
+        <br /><br />
+
+        <h2>Charges / statutes</h2>
+
+        <label>
+          Statutes or charges (one per line)<br />
+          <textarea name="statutes" rows="5"
+            placeholder="Example:
+321.174 — Driving without valid license
+321J.2 — Operating while intoxicated"></textarea>
+        </label>
+        <br /><br />
+
+        <label>
+          Notes (optional)<br />
+          <textarea name="notes" rows="4"
+            placeholder="Anything important about the stop or case you want to remember."></textarea>
+        </label>
+        <br /><br />
+
+        <!-- File upload is optional for now; we just store the name -->
+        <h2>Optional: attach a document (not parsed yet)</h2>
+        <label>
+          Upload PDF or image (optional)<br />
+          <input type="file" name="attachment" accept=".pdf,image/*" />
+        </label>
+        <p class="abe-note">
+          For now, A.B.E. only records the filename. OCR / text parsing can
+          be wired in as a later step.
+        </p>
+
+        <br />
+        <button type="submit" class="abe-btn">
+          Save Intake Session
+        </button>
+
+        <p id="intake-status" class="abe-note" style="margin-top:1rem;"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../engine/intake/intake.js"></script>
+</body>
+</html>
