@@ -1,0 +1,21 @@
+{
+  "license": {
+    "type": "CC BY-NC 4.0",
+    "commercial_use": false,
+    "attribution_required": true,
+    "derivatives_allowed": true,
+    "must_remain_free": true,
+    "no_paywalls": true,
+    "no_proprietary_forks": true,
+    "official_creator": "Terra Dawn Shouse",
+    "engine_name": "A.B.E. — American Butterfly Effect",
+    "purpose": "Constitutional audit engine for public benefit",
+    "required_doctrine": [
+      "Always free",
+      "Always public",
+      "No privatization",
+      "No resale",
+      "Must preserve local-only processing"
+    ]
+  }
+}
