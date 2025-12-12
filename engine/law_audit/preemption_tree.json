@@ -1,0 +1,38 @@
+{
+  "version": "1.0",
+  "root_question": "Does this state law or enforcement action conflict with federal law or constitutional structure?",
+  "steps": [
+    {
+      "id": "step_1",
+      "question": "Is there an express preemption clause covering this field?",
+      "outcomes": [
+        { "answer": "yes", "result": "express_preempted", "next": null },
+        { "answer": "no", "next": "step_2" }
+      ]
+    },
+    {
+      "id": "step_2",
+      "question": "Has Congress occupied the field with a comprehensive regulatory scheme?",
+      "outcomes": [
+        { "answer": "yes", "result": "field_preempted", "next": null },
+        { "answer": "no", "next": "step_3" }
+      ]
+    },
+    {
+      "id": "step_3",
+      "question": "Is it impossible to comply with both state and federal requirements?",
+      "outcomes": [
+        { "answer": "yes", "result": "conflict_preempted", "next": null },
+        { "answer": "no", "next": "step_4" }
+      ]
+    },
+    {
+      "id": "step_4",
+      "question": "Does the state law or practice obstruct Congress's objectives (e.g., limiting FMCSRs to commercial activity)?",
+      "outcomes": [
+        { "answer": "yes", "result": "obstacle_preempted", "next": null },
+        { "answer": "no", "result": "no_preemption_issue", "next": null }
+      ]
+    }
+  ]
+}
