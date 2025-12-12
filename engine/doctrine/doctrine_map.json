@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "doctrines": {
+    "supremacy_preemption": {
+      "label": "Supremacy & Federal Preemption",
+      "description": "State law or practice conflicts with, obstructs, or is displaced by federal law under the Supremacy Clause."
+    },
+    "ultra_vires": {
+      "label": "Ultra Vires / Beyond Delegated Power",
+      "description": "The state is acting beyond the powers granted by statute or constitutional structure."
+    },
+    "void_ab_initio": {
+      "label": "Void ab Initio",
+      "description": "The measure is invalid from the outset because it contradicts constitutional text or structure."
+    },
+    "rights_without_remedy": {
+      "label": "Rights Without Remedy",
+      "description": "Rights are acknowledged in theory, but the enforcement scheme denies a practical remedy."
+    },
+    "police_power_overreach": {
+      "label": "Police Power Overreach",
+      "description": "State actors invoke 'police powers' to justify control beyond the Tenth Amendment's limits."
+    },
+    "commercial_fiction": {
+      "label": "Commercial Fiction",
+      "description": "Private, non-commercial conduct is treated as commercial in order to import regulatory frameworks."
+    },
+    "false_claims_risk": {
+      "label": "False Claims / Funding Misalignment",
+      "description": "Practices raise concern that funding certifications are misleading or false."
+    }
+  },
+  "rules": [
+    {
+      "id": "r1_preemption",
+      "condition": "tier3_preemption_status != 'no_preemption_issue'",
+      "add_applied": ["supremacy_preemption"]
+    },
+    {
+      "id": "r2_ultra_vires",
+      "condition": "tier1_status == 'ultra_vires'",
+      "add_applied": ["ultra_vires"]
+    },
+    {
+      "id": "r3_void_ab_initio",
+      "condition": "tier4_const_status == 'void_ab_initio'",
+      "add_applied": ["void_ab_initio", "supremacy_preemption"]
+    },
+    {
+      "id": "r4_police_overreach",
+      "condition": "tier2_scope_status == 'beyond_scope'",
+      "add_implicated": ["police_power_overreach"]
+    },
+    {
+      "id": "r5_commercial_fiction_private",
+      "condition": "driver_type == 'private' && (law_category == 'fmcsr_adoption' || law_category == 'commercial_transport')",
+      "add_applied": ["commercial_fiction"],
+      "add_implicated": ["ultra_vires", "supremacy_preemption"]
+    },
+    {
+      "id": "r6_rights_without_remedy",
+      "condition": "tier4_const_status == 'over_reach' || tier4_const_status == 'rights_infringing'",
+      "add_implicated": ["rights_without_remedy"]
+    },
+    {
+      "id": "r7_false_claims_high",
+      "condition": "funding_risk == 'high'",
+      "add_applied": ["false_claims_risk"]
+    },
+    {
+      "id": "r8_false_claims_medium",
+      "condition": "funding_risk == 'medium'",
+      "add_implicated": ["false_claims_risk"]
+    }
+  ]
+}
