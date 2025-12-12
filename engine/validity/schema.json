@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_Validity_v1",
+  "description": "Overall validity assessment: structural legality and void ab initio analysis.",
+  "type": "object",
+  "required": [
+    "jurisdiction",
+    "law_category",
+    "inputs",
+    "validity",
+    "summary"
+  ],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "law_category": {
+      "type": "string",
+      "enum": [
+        "driver_licensing",
+        "vehicle_registration",
+        "insurance",
+        "implied_consent",
+        "dwi_dui_owi",
+        "commercial_transport",
+        "fmcsr_adoption",
+        "other"
+      ]
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "tier1_status": { "type": "string" },
+        "tier2_scope_status": { "type": "string" },
+        "tier3_preemption_status": { "type": "string" },
+        "tier4_const_status": { "type": "string" },
+        "funding_risk": { "type": "string" },
+        "divergence_score": { "type": "number" },
+        "fidelity_score": { "type": "number" },
+        "driver_type": { "type": "string" },
+        "doctrines_applied": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "doctrines_implicated": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "validity": {
+      "type": "object",
+      "required": ["status", "grounds", "constitutional_hooks", "recommended_actions"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "presumptively_valid",
+            "structurally_defective",
+            "void_ab_initio_candidate",
+            "void_ab_initio_strong",
+            "unknown"
+          ]
+        },
+        "grounds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "constitutional_hooks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["user_friendly", "technical"],
+      "properties": {
+        "user_friendly": { "type": "string" },
+        "technical": { "type": "string" }
+      }
+    }
+  }
+}
