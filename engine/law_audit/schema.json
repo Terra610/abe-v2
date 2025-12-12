@@ -1,1 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_LawAudit_v1",
+  "description": "Full sovereign law audit: federal scope, commercial nexus, preemption, and constitutional posture.",
+  "type": "object",
+  "required": [
+    "jurisdiction",
+    "law_reference",
+    "user_profile",
+    "audit_checks",
+    "summary"
+  ],
+  "properties": {
+    "jurisdiction": {
+      "type": "object",
+      "required": ["country", "state"],
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" },
+        "county": { "type": "string" }
+      }
+    },
 
+    "law_reference": {
+      "type": "object",
+      "required": ["category", "statutes_raw"],
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "driver_licensing",
+            "vehicle_registration",
+            "insurance",
+            "implied_consent",
+            "dwi_dui_owi",
+            "commercial_transport",
+            "fmcsr_adoption",
+            "other"
+          ]
+        },
+        "statutes_raw": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "user_profile": {
+      "type": "object",
+      "required": [
+        "driver_type",
+        "cdl_status",
+        "vehicle_use",
+        "scenario",
+        "suspected_basis"
+      ],
+      "properties": {
+        "driver_type": {
+          "type": "string",
+          "enum": ["private", "commercial_intrastate", "commercial_interstate"]
+        },
+        "cdl_status": {
+          "type": "string",
+          "enum": ["none", "has_cdl"]
+        },
+        "vehicle_use": {
+          "type": "string",
+          "enum": [
+            "personal",
+            "for_hire",
+            "intrastate_commercial",
+            "interstate_commercial"
+          ]
+        },
+        "scenario": {
+          "type": "string",
+          "enum": [
+            "routine_stop",
+            "checkpoint",
+            "hearing",
+            "criminal_case",
+            "civil_case"
+          ]
+        },
+        "suspected_basis": {
+          "type": "string",
+          "enum": [
+            "licensing_only",
+            "impaired_driving",
+            "registration_insurance",
+            "commercial_compliance",
+            "unknown"
+          ]
+        }
+      }
+    },
+
+    "audit_checks": {
+      "type": "object",
+      "required": [
+        "tier1_federal_alignment",
+        "tier2_scope_and_nexus",
+        "tier3_preemption",
+        "tier4_constitutional"
+      ],
+      "properties": {
+        "tier1_federal_alignment": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["aligned", "over_broad", "ultra_vires", "unknown"]
+            },
+            "notes": { "type": "string" },
+            "federal_sources": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "tier2_scope_and_nexus": {
+          "type": "object",
+          "properties": {
+            "commercial_nexus_required": { "type": "boolean" },
+            "commercial_nexus_present": { "type": "boolean" },
+            "scope_status": {
+              "type": "string",
+              "enum": ["within_scope", "beyond_scope", "unknown"]
+            },
+            "notes": { "type": "string" }
+          }
+        },
+        "tier3_preemption": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "no_preemption_issue",
+                "express_preempted",
+                "field_preempted",
+                "conflict_preempted",
+                "obstacle_preempted",
+                "unclear"
+              ]
+            },
+            "notes": { "type": "string" }
+          }
+        },
+        "tier4_constitutional": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "text_aligned",
+                "over_reach",
+                "rights_infringing",
+                "void_ab_initio",
+                "unknown"
+              ]
+            },
+            "rights_implicated": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+
+    "summary": {
+      "type": "object",
+      "required": ["user_friendly", "technical", "risk_flags"],
+      "properties": {
+        "user_friendly": { "type": "string" },
+        "technical": { "type": "string" },
+        "risk_flags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "ultra_vires_enforcement",
+              "no_commercial_nexus",
+              "private_driver_in_commercial_framework",
+              "likely_preempted",
+              "constitutional_violation",
+              "void_ab_initio_pattern"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
