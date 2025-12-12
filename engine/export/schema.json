@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ABE_Export_v1",
+  "description": "Consolidated output for ABE audits, including law audit, funding audit, doctrine analysis, and scorecard.",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "jurisdiction",
+    "law_category",
+    "modules",
+    "scorecard",
+    "export_bundle"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "jurisdiction": {
+      "type": "object",
+      "properties": {
+        "country": { "type": "string" },
+        "state": { "type": "string" }
+      }
+    },
+    "law_category": { "type": "string" },
+
+    "modules": {
+      "type": "object",
+      "properties": {
+        "law_audit": { "type": "object" },
+        "funding_audit": { "type": "object" },
+        "doctrine": { "type": "object" }
+      }
+    },
+
+    "scorecard": {
+      "type": "object"
+    },
+
+    "export_bundle": {
+      "type": "object",
+      "properties": {
+        "json": { "type": "string" },
+        "html": { "type": "string" }
+      }
+    }
+  }
+}
