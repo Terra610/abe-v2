@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "severity_scale": ["low", "medium", "high", "extreme"],
+  "tests": [
+    {
+      "id": "rights_travel_restricted",
+      "description": "Core freedom of movement or travel restricted by licensing or enforcement.",
+      "signals": [
+        "License-based arrest or detention",
+        "Vehicle used for basic life functions (work, family, medical)",
+        "Multiple stops escalating into custody or incarceration"
+      ],
+      "doctrine_refs": ["freedom_of_movement", "due_process_substantive"]
+    }
+  ]
+}
