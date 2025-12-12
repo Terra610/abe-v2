@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>A.B.E. — Audit Results</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="assets/abe.css" />
+</head>
+<body>
+  <header class="abe-header">
+    <div class="abe-wrap">
+      <button class="abe-btn" style="float:right;margin-top:.2rem"
+              onclick="window.location.href='upload.html'">
+        ← Back to Intake
+      </button>
+      <h1>Audit Results</h1>
+      <p class="abe-lead">
+        This page shows the law & preemption audit for your saved intake,
+        calculated locally in your browser.
+      </p>
+    </div>
+  </header>
+
+  <main class="abe-wrap">
+    <section class="abe-panel">
+      <p id="result-status" class="abe-note">
+        Loading audit… (make sure you saved an Intake first)
+      </p>
+    </section>
+
+    <section class="abe-panel" id="summary-panel" style="margin-top:1rem;display:none;">
+      <h2>Summary</h2>
+      <p id="summary-text"></p>
+      <p class="abe-note"><strong>Risk flags:</strong> <span id="summary-flags"></span></p>
+    </section>
+
+    <section class="abe-panel" id="tier1-panel" style="margin-top:1rem;display:none;">
+      <h2>Tier 1 — Federal Alignment</h2>
+      <p><strong>Status:</strong> <span id="tier1-status"></span></p>
+      <p id="tier1-notes"></p>
+    </section>
+
+    <section class="abe-panel" id="tier2-panel" style="margin-top:1rem;display:none;">
+      <h2>Tier 2 — Scope & Commercial Nexus</h2>
+      <p><strong>Status:</strong> <span id="tier2-status"></span></p>
+      <p id="tier2-notes"></p>
+    </section>
+
+    <section class="abe-panel" id="tier3-panel" style="margin-top:1rem;display:none;">
+      <h2>Tier 3 — Federal Preemption</h2>
+      <p><strong>Status:</strong> <span id="tier3-status"></span></p>
+      <p id="tier3-notes"></p>
+    </section>
+
+    <section class="abe-panel" id="tier4-panel" style="margin-top:1rem;display:none;">
+      <h2>Tier 4 — Constitutional Posture</h2>
+      <p><strong>Status:</strong> <span id="tier4-status"></span></p>
+      <p id="tier4-notes"></p>
+    </section>
+
+    <section class="abe-panel" id="raw-panel" style="margin-top:1rem;display:none;">
+      <h2>Technical Snapshot (JSON)</h2>
+      <pre id="raw-json" style="white-space:pre-wrap;font-size:0.8rem;"></pre>
+    </section>
+  </main>
+
+  <!-- Engine modules: classify + law_audit -->
+  <script src="../engine/classify/classify.js"></script>
+  <script src="../engine/law_audit/law_audit.js"></script>
+
+  <!-- Simple renderer that waits for ABE_LawAudit in localStorage -->
+  <script>
+    (function () {
+      const LAWAUDIT_KEY = "ABE_LawAudit";
+
+      function $(id) { return document.getElementById(id); }
+
+      function render(audit) {
+        const statusEl = $("result-status");
+        const summaryPanel = $("summary-panel");
+        const tier1Panel = $("tier1-panel");
+        const tier2Panel = $("tier2-panel");
+        const tier3Panel = $("tier3-panel");
+        const tier4Panel = $("tier4-panel");
+        const rawPanel = $("raw-panel");
+
+        if (!audit) {
+          if (statusEl) {
+            statusEl.textContent =
+              "No audit found. Make sure you completed the Intake step first.";
+          }
+          return;
+        }
+
+        if (statusEl) statusEl.textContent = "Audit complete.";
+
+        if (summaryPanel) summaryPanel.style.display = "block";
+        if (tier1Panel) tier1Panel.style.display = "block";
+        if (tier2Panel) tier2Panel.style.display = "block";
+        if (tier3Panel) tier3Panel.style.display = "block";
+        if (tier4Panel) tier4Panel.style.display = "block";
+        if (rawPanel) rawPanel.style.display = "block";
+
+        const s = audit.summary || {};
+        $("summary-text").textContent = s.user_friendly || "";
+        $("summary-flags").textContent = (s.risk_flags || []).join(", ") || "none";
+
+        const c = audit.audit_checks || {};
+        const t1 = c.tier1_federal_alignment || {};
+        const t2 = c.tier2_scope_and_nexus || {};
+        const t3 = c.tier3_preemption || {};
+        const t4 = c.tier4_constitutional || {};
+
+        $("tier1-status").textContent = t1.status || "";
+        $("tier1-notes").textContent = t1.notes || "";
+
+        const t2Status = t2.scope_status || "";
+        $("tier2-status").textContent = t2Status;
+        $("tier2-notes").textContent = t2.notes || "";
+
+        $("tier3-status").textContent = t3.status || "";
+        $("tier3-notes").textContent = t3.notes || "";
+
+        $("tier4-status").textContent = t4.status || "";
+        $("tier4-notes").textContent = t4.notes || "";
+
+        $("raw-json").textContent = JSON.stringify(audit, null, 2);
+      }
+
+      function tryLoad(attempt) {
+        const statusEl = $("result-status");
+        try {
+          const raw = localStorage.getItem(LAWAUDIT_KEY);
+          if (raw) {
+            const audit = JSON.parse(raw);
+            render(audit);
+            return;
+          }
+        } catch (e) {
+          console.error("Error reading ABE_LawAudit:", e);
+          if (statusEl) statusEl.textContent = "Error reading audit from local storage.";
+          return;
+        }
+
+        if (attempt < 20) {
+          if (statusEl) {
+            statusEl.textContent = "Running audit… (attempt " + (attempt + 1) + ")";
+          }
+          setTimeout(function () { tryLoad(attempt + 1); }, 150);
+        } else {
+          if (statusEl) {
+            statusEl.textContent =
+              "No law audit found after multiple attempts. Make sure Intake was saved.";
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // classify.js and law_audit.js both hook DOMContentLoaded too.
+        // We just poll for the result in localStorage.
+        tryLoad(0);
+      });
+    })();
+  </script>
+</body>
+</html>
