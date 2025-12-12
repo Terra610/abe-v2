@@ -8,7 +8,7 @@
       {
         "id": "intake",
         "name": "Intake",
-        "version": "1.0.0",
+            "version": "1.0.0",
         "entry": "../engine/intake/intake.js",
         "status": "stable"
       },
@@ -25,6 +25,34 @@
         "version": "1.0.0",
         "entry": "../engine/law_audit/law_audit.js",
         "status": "stable"
+      },
+      {
+        "id": "funding_audit",
+        "name": "Funding & FCA Audit",
+        "version": "1.0.0",
+        "entry": "../engine/funding_audit/funding_audit.js",
+        "status": "stable"
+      },
+      {
+        "id": "doctrine",
+        "name": "Doctrine Map",
+        "version": "1.0.0",
+        "entry": "../engine/doctrine/doctrine.js",
+        "status": "stable"
+      },
+      {
+        "id": "scorecard",
+        "name": "Fidelity Scorecard",
+        "version": "1.0.0",
+        "entry": "../engine/scorecard/scorecard.js",
+        "status": "planned"
+      },
+      {
+        "id": "export",
+        "name": "Export & Report",
+        "version": "1.0.0",
+        "entry": "../engine/export/export.js",
+        "status": "planned"
       }
     ]
   }
