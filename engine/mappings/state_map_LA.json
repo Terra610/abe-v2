@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "state": "LA",
+  "statutes": [
+    {
+      "code": "LA_RS_32_661",
+      "citation": "La. Rev. Stat. § 32:661",
+      "label": "Implied consent",
+      "notes": "Used to justify chemical testing under threat of license suspension or criminal penalty.",
+      "likely_scope": "private_movement",
+      "related_federal": ["mcsap", "nhtsa_402"],
+      "risk_flags": ["rights_travel_restricted"]
+    },
+    {
+      "code": "LA_RS_32_411",
+      "citation": "La. Rev. Stat. § 32:411",
+      "label": "Driver’s license required",
+      "notes": "States may not convert a fundamental liberty into a license and then criminalize its exercise.",
+      "likely_scope": "private_movement",
+      "related_federal": [],
+      "risk_flags": ["rights_travel_restricted"]
+    }
+  ]
+}
