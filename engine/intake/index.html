@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <title>A.B.E. — Intake Module</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #0b0d12;
+      --panel: #141820;
+      --ink: #e6e6e6;
+      --muted: #9fb3c8;
+      --accent: #ffd857;
+      --accentGlow: #ffe892;
+      --link: #5ddfff;
+    }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .wrap {
+      max-width: 800px;
+      margin: 1.5rem auto;
+      padding: 1.5rem;
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin-top: 0.5rem;
+      background: #0f131a;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      color: var(--ink);
+    }
+    button {
+      margin-top: 1.2rem;
+      background: var(--accent);
+      color: #000;
+      padding: 0.75rem 1.4rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    button:hover {
+      box-shadow: 0 0 12px var(--accentGlow);
+    }
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>A.B.E. Intake — Step 1</h1>
+  <p class="subtitle">Upload your state documents, citations, and narrative</p>
+</header>
+
+<div class="wrap">
+
+  <label for="state">Choose State for Audit</label>
+  <select id="state">
+    <option value="LA">Louisiana</option>
+    <option value="IA">Iowa</option>
+    <option value="TX">Texas</option>
+    <option value="CA">California</option>
+    <!-- More states can be added as needed -->
+  </select>
+
+  <label for="incident">Upload Incident Report / Evidence</label>
+  <input type="file" id="incident" />
+
+  <button onclick="next()">Continue to Classification →</button>
+</div>
+
+<script>
+function next() {
+  const state = document.getElementById('state').value;
+  localStorage.setItem('abe_state', state);
+  window.location.href = '../classify/index.html';
+}
+</script>
+
+<footer>
+  © 2025 Terra Dawn Shouse — A.B.E. Engine
+</footer>
+
+</body>
+</html>
