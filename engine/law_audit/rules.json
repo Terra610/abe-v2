@@ -1,0 +1,108 @@
+{
+  "version": "1.0",
+  "federal": {
+    "country": "United States",
+    "anchors": [
+      "U.S. Constitution (Supremacy Clause, Ninth, Tenth, Fourth, Fourteenth)",
+      "49 U.S.C. Subtitle VI (Motor Vehicle and Driver Programs)",
+      "49 CFR Parts 350, 383, 390–399 (FMCSRs)",
+      "49 CFR Part 40 (ODAPC drug/alcohol testing — safety-sensitive employees)"
+    ],
+    "fmcsr_scope": {
+      "applies_only_to_commercial": true,
+      "excluded_vehicle_uses": [
+        "personal",
+        "purely private non-commercial use",
+        "non-business household errands"
+      ],
+      "key_sections": [
+        "49 CFR 350.303(d)(5)",
+        "49 CFR 390.3",
+        "49 CFR 390.5"
+      ]
+    },
+    "dot_testing_scope": {
+      "applies_only_to_employees": true,
+      "description": "49 CFR Part 40 applies only to DOT-regulated, safety-sensitive employees with an employment relationship to a covered employer."
+    }
+  },
+  "categories": {
+    "driver_licensing": {
+      "commercial_nexus_required": false,
+      "federal_sources": [
+        "No general federal requirement that private citizens obtain a commercial-style license to exercise ordinary movement."
+      ],
+      "notes": "States may not transform private movement into commercial conduct purely to extend FMCSR-like control."
+    },
+    "implied_consent": {
+      "commercial_nexus_required": false,
+      "federal_sources": [
+        "No federal statute converts use of public roads into consent for chemical testing of non-commercial drivers.",
+        "49 CFR Part 40 is limited to safety-sensitive employees."
+      ],
+      "notes": "Implied consent doctrines applied to non-commercial drivers are structurally suspect under the Fourth, Fifth, Ninth, and Fourteenth Amendments."
+    },
+    "commercial_transport": {
+      "commercial_nexus_required": true,
+      "federal_sources": [
+        "49 U.S.C. Subtitle VI",
+        "49 CFR Parts 350, 383, 390–399"
+      ],
+      "notes": "Here, the core question is whether the facts match the commercial definitions in Title 49 and FMCSRs."
+    },
+    "fmcsr_adoption": {
+      "commercial_nexus_required": true,
+      "federal_sources": [
+        "49 CFR 350.303(d)(5)",
+        "49 CFR 390.3",
+        "49 CFR 390.5"
+      ],
+      "notes": "States must adopt FMCSRs for commercial motor carriers, not for ordinary non-commercial drivers."
+    },
+    "vehicle_registration": {
+      "commercial_nexus_required": false,
+      "federal_sources": [],
+      "notes": "Registration regimes still must respect constitutional structure but generally do not invoke FMCSR directly."
+    },
+    "insurance": {
+      "commercial_nexus_required": false,
+      "federal_sources": [],
+      "notes": "Insurance requirements are typically state-law based but cannot be used as an excuse to import FMCSR into private movement."
+    },
+    "dwi_dui_owi": {
+      "commercial_nexus_required": false,
+      "federal_sources": [
+        "Congress ties some highway funds to impaired driving enforcement, but does not expand FMCSR jurisdiction to all private motorists."
+      ],
+      "notes": "Impaired driving laws must still comply with Fourth and Fourteenth Amendment constraints."
+    },
+    "other": {
+      "commercial_nexus_required": false,
+      "federal_sources": [],
+      "notes": "Catch-all; requires deeper analysis."
+    }
+  },
+  "constitutional": {
+    "void_ab_initio_conditions": [
+      "Contradicts explicit constitutional text or structure.",
+      "Removes or nullifies an existing remedy for rights violations.",
+      "Creates a penalty for exercising a retained right.",
+      "Invents power not delegated to any level of government.",
+      "Transforms private, non-commercial conduct into commercial conduct without textual authority."
+    ],
+    "rights_mapping": {
+      "driver_licensing_private": [
+        "Ninth Amendment",
+        "Tenth Amendment",
+        "Fourteenth Amendment",
+        "Fourth Amendment (when used to justify stops/arrests)"
+      ],
+      "implied_consent_private": [
+        "Fourth Amendment",
+        "Fifth Amendment",
+        "Ninth Amendment",
+        "Fourteenth Amendment"
+      ]
+    }
+  }
+}
