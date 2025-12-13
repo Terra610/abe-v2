@@ -1,42 +1,447 @@
-<script>
-(async function () {
-  // 1. Collect all stored audit data
-  const audit = {
-    state: localStorage.getItem('abe_state'),
-    case_type: localStorage.getItem('abe_case_type'),
-    law_analysis: localStorage.getItem('abe_law_block'),
-    funding: localStorage.getItem('abe_funding'),
-    validity: localStorage.getItem('abe_validity'),
-    scorecard: localStorage.getItem('abe_scorecard')
-  };
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>A.B.E. — Export & SHA-256 Receipt</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  // 2. Convert audit to JSON
-  const jsonText = JSON.stringify(audit, null, 2);
+  <style>
+    :root {
+      --bg: #05060a;
+      --panel: #111522;
+      --panel-soft: #171b28;
+      --ink: #e6e6e6;
+      --muted: #9fb3c8;
+      --accent: #ffd857;
+      --accentGlow: #ffe892;
+      --danger: #ff6b6b;
+      --ok: #4bd28f;
+      --link: #5ddfff;
+      --borderSubtle: rgba(255,255,255,0.08);
+    }
 
-  // 3. Display the JSON in the textarea
-  document.getElementById('exportBlock').value = jsonText;
+    * {
+      box-sizing: border-box;
+    }
 
-  // 4. Generate SHA-256
-  async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #161b29 0, #05060a 55%);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 0 0 3rem;
+    }
+
+    header {
+      padding: 1.75rem 1.25rem 0.75rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 1.5rem auto 0;
+      padding: 1.25rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 14px;
+      border: 1px solid var(--borderSubtle);
+      padding: 1.25rem 1.25rem 1.5rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+      margin-bottom: 1.25rem;
+    }
+
+    .card h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .card p.lead {
+      margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      color: var(--muted);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 180px;
+      border-radius: 10px;
+      border: 1px solid var(--borderSubtle);
+      background: var(--panel-soft);
+      color: var(--ink);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      padding: 0.75rem;
+      resize: vertical;
+    }
+
+    textarea.small {
+      min-height: 110px;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .row > .col {
+      flex: 1 1 260px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.12s ease;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 0 rgba(0,0,0,0.4);
+    }
+
+    button.primary:hover {
+      box-shadow: 0 0 14px var(--accentGlow);
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: #1d2232;
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    button.secondary:hover {
+      background: #23293a;
+      transform: translateY(-1px);
+    }
+
+    .btn-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .hash-display {
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 10px;
+      background: #05070e;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.86rem;
+      white-space: nowrap;
+      overflow-x: auto;
+    }
+
+    .hash-display span.label {
+      display: inline-block;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-right: 0.4rem;
+    }
+
+    .hash-display span.value {
+      color: var(--accentGlow);
+    }
+
+    .status {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+    }
+
+    .status.ok {
+      color: var(--ok);
+    }
+
+    .status.err {
+      color: var(--danger);
+    }
+
+    .hint {
+      margin-top: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 1.45rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>A.B.E. — Export Audit & Receipt</h1>
+    <p>Lock in your audit snapshot with a verifiable SHA-256 receipt.</p>
+  </header>
+
+  <div class="wrap">
+    <!-- Step 1: Export block -->
+    <section class="card">
+      <h2>Step 1 — Confirm your export block</h2>
+      <p class="lead">
+        This is the JSON **export block** that describes your case, statutes, and audit results.
+        The **exact text** below is what will be hashed.
+      </p>
+
+      <label for="exportBlock">
+        Export block JSON
+      </label>
+      <textarea id="exportBlock" spellcheck="false" autocomplete="off">
+{
+  "version": "1.0",
+  "jurisdiction": "Louisiana",
+  "case_label": "Sample A.B.E. Audit",
+  "inputs": {
+    "actor_type": "state_or_local_official",
+    "scenario": "traffic_stop",
+    "notes": "Replace this with your actual intake + doctrine summary export block."
+  },
+  "findings": {
+    "rights_impacted": [],
+    "funding_streams_flagged": [],
+    "doctrines_triggered": []
   }
+}
+      </textarea>
 
-  const hash = await sha256(jsonText);
+      <div class="hint">
+        Replace this sample with your real export JSON when you’re running a live audit.
+      </div>
 
-  // 5. Display SHA-256 hash to user
-  document.getElementById("hashOutput").textContent = hash;
+      <div class="btn-row">
+        <button class="secondary" id="copyExportBtn">Copy export block</button>
+      </div>
+    </section>
 
-  // 6. Give user a copy button
-  document.getElementById("copyHash").onclick = () => {
-    navigator.clipboard.writeText(hash);
-    alert("Hash copied to clipboard!");
-  };
+    <!-- Step 2: Generate SHA-256 -->
+    <section class="card">
+      <h2>Step 2 — Generate SHA-256 hash</h2>
+      <p class="lead">
+        A SHA-256 hash is a fingerprint of your export block.  
+        If a single character changes, the hash changes. That’s what makes it tamper-evident.
+      </p>
 
-  // 7. Save hash locally as backup
-  localStorage.setItem("abe_last_hash", hash);
+      <div class="btn-row">
+        <button class="primary" id="hashBtn">Generate / Refresh SHA-256</button>
+      </div>
 
-})();
-</script>
+      <div id="hashBox" class="hash-display" style="margin-top:0.9rem; display:none;">
+        <span class="label">SHA-256</span>
+        <span class="value" id="hashValue"></span>
+      </div>
+
+      <p id="hashStatus" class="status" style="display:none;"></p>
+
+      <div class="btn-row" id="hashCopyRow" style="display:none;">
+        <button class="secondary" id="copyHashBtn">Copy hash only</button>
+      </div>
+
+      <div class="hint">
+        You’ll paste this hash into <strong>Step 2</strong> on the Verify page  
+        (<code>/engine/verify/</code>) alongside the export block text from Step 1.
+      </div>
+    </section>
+
+    <!-- Step 3: Build a compact receipt block -->
+    <section class="card">
+      <h2>Step 3 — Save a receipt block (optional but recommended)</h2>
+      <p class="lead">
+        This is a compact **audit receipt** that records the algorithm, hash, and timestamp.  
+        Save it with your case files and exhibits.
+      </p>
+
+      <label for="receiptBlock">
+        A.B.E. audit receipt (JSON)
+      </label>
+      <textarea id="receiptBlock" class="small" spellcheck="false" autocomplete="off" readonly></textarea>
+
+      <div class="btn-row">
+        <button class="secondary" id="copyReceiptBtn">Copy receipt block</button>
+      </div>
+
+      <div class="hint">
+        In court or oversight review:  
+        1️⃣ Paste the stored export block into Verify — Step 1  
+        2️⃣ Paste the stored hash into Verify — Step 2  
+        3️⃣ If they match, the audit record is unchanged from when this receipt was created.
+      </div>
+    </section>
+
+    <footer>
+      A.B.E. — American Butterfly Effect • Audit Engine Export Module<br />
+      Licensed under
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
+        CC BY-NC 4.0 International
+      </a>. No commercial use. No paywalls. © Terra Dawn Shouse
+    </footer>
+  </div>
+
+  <script>
+    const exportEl  = document.getElementById('exportBlock');
+    const hashBtn   = document.getElementById('hashBtn');
+    const hashBox   = document.getElementById('hashBox');
+    const hashValEl = document.getElementById('hashValue');
+    const hashStatus = document.getElementById('hashStatus');
+    const hashCopyRow = document.getElementById('hashCopyRow');
+    const receiptEl = document.getElementById('receiptBlock');
+
+    const copyExportBtn  = document.getElementById('copyExportBtn');
+    const copyHashBtn    = document.getElementById('copyHashBtn');
+    const copyReceiptBtn = document.getElementById('copyReceiptBtn');
+
+    async function sha256Hex(text) {
+      const enc = new TextEncoder();
+      const data = enc.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function showStatus(msg, ok) {
+      hashStatus.style.display = 'block';
+      hashStatus.textContent = msg;
+      hashStatus.className = 'status ' + (ok ? 'ok' : 'err');
+    }
+
+    function buildReceipt(hashHex) {
+      const nowIso = new Date().toISOString();
+      const receipt = {
+        abe_audit_receipt: {
+          version: "1.0",
+          generated_at: nowIso,
+          hash_algorithm: "SHA-256",
+          export_block_hash: hashHex,
+          notes: "Save this with your export block. Use /engine/verify to confirm integrity."
+        }
+      };
+      return JSON.stringify(receipt, null, 2);
+    }
+
+    hashBtn.addEventListener('click', async () => {
+      const exportText = exportEl.value.trim();
+      if (!exportText) {
+        showStatus("Export block is empty. Paste your JSON first.", false);
+        return;
+      }
+
+      try {
+        const hashHex = await sha256Hex(exportText);
+        hashBox.style.display = 'block';
+        hashValEl.textContent = hashHex;
+        hashCopyRow.style.display = 'flex';
+        showStatus("SHA-256 hash generated. You can now copy the hash and receipt.", true);
+
+        const receiptText = buildReceipt(hashHex);
+        receiptEl.value = receiptText;
+      } catch (err) {
+        console.error(err);
+        showStatus("Error generating hash. Check your browser security settings.", false);
+      }
+    });
+
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    }
+
+    copyExportBtn.addEventListener('click', async () => {
+      const ok = await copyToClipboard(exportEl.value);
+      if (ok) {
+        showStatus("Export block copied to clipboard.", true);
+      } else {
+        showStatus("Could not copy export block (clipboard blocked).", false);
+      }
+    });
+
+    copyHashBtn.addEventListener('click', async () => {
+      const hashText = hashValEl.textContent.trim();
+      if (!hashText) {
+        showStatus("No hash to copy yet. Generate SHA-256 first.", false);
+        return;
+      }
+      const ok = await copyToClipboard(hashText);
+      if (ok) {
+        showStatus("SHA-256 hash copied. Paste it into Verify — Step 2.", true);
+      } else {
+        showStatus("Could not copy hash (clipboard blocked).", false);
+      }
+    });
+
+    copyReceiptBtn.addEventListener('click', async () => {
+      const txt = receiptEl.value.trim();
+      if (!txt) {
+        showStatus("No receipt yet. Generate SHA-256 first.", false);
+        return;
+      }
+      const ok = await copyToClipboard(txt);
+      if (ok) {
+        showStatus("Receipt block copied. Save it with your case files.", true);
+      } else {
+        showStatus("Could not copy receipt (clipboard blocked).", false);
+      }
+    });
+  </script>
+</body>
+</html>
