@@ -1,86 +1,300 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="utf-8">
-  <title>A.B.E. — Verify Audit Hash (SHA-256)</title>
+  <meta charset="utf-8" />
+  <title>A.B.E. — Verify Audit Hash</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    :root{--bg:#0b0d12;--panel:#141820;--ink:#e6e6e6;
-      --muted:#9fb3c8;--accent:#ffd857;--accentGlow:#ffe892;}
-    body{margin:0;background:var(--bg);color:var(--ink);
-      font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;}
-    header{padding:2rem 1.5rem;text-align:center;}
-    h1{margin:0 0 .5rem;font-size:2rem;}
-    .wrap{max-width:900px;margin:1.5rem auto;padding:1.5rem;
-      background:var(--panel);border-radius:12px;
-      border:1px solid rgba(255,255,255,.08);}
-    textarea{width:100%;min-height:160px;margin-top:.5rem;
-      background:#0f131a;color:var(--ink);border-radius:8px;
-      border:1px solid rgba(255,255,255,.12);padding:.75rem;
-      font-family:monospace;font-size:.8rem;}
-    input{width:100%;padding:.6rem;margin-top:.5rem;
-      background:#0f131a;color:var(--ink);border-radius:6px;
-      border:1px solid rgba(255,255,255,.12);font-family:monospace;}
-    button{margin-top:1.2rem;background:var(--accent);color:#000;
-      padding:.75rem 1.4rem;border-radius:8px;border:none;
-      cursor:pointer;font-weight:600;font-size:1rem;}
-    button:hover{box-shadow:0 0 12px var(--accentGlow);}
-    .result{margin-top:1rem;font-size:.9rem;}
-    .ok{color:#4bd28f;}
-    .bad{color:#ff7676;}
-    footer{text-align:center;margin:2rem 0;color:var(--muted);
-      font-size:.85rem;}
+    :root {
+      --bg: #05060a;
+      --panel: #111522;
+      --panel-soft: #171b28;
+      --ink: #e6e6e6;
+      --muted: #9fb3c8;
+      --accent: #ffd857;
+      --accentGlow: #ffe892;
+      --danger: #ff6b6b;
+      --ok: #4bd28f;
+      --link: #5ddfff;
+      --borderSubtle: rgba(255,255,255,0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #161b29 0, #05060a 55%);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 0 0 3rem;
+    }
+
+    header {
+      padding: 1.75rem 1.25rem 0.75rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 1.5rem auto 0;
+      padding: 1.25rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 14px;
+      border: 1px solid var(--borderSubtle);
+      padding: 1.25rem 1.25rem 1.5rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+      margin-bottom: 1.25rem;
+    }
+
+    .card h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .card p.lead {
+      margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 0.35rem;
+      color: var(--muted);
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--borderSubtle);
+      background: var(--panel-soft);
+      color: var(--ink);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      padding: 0.75rem;
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+    }
+
+    .btn-row {
+      margin-top: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.12s ease;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 0 rgba(0,0,0,0.4);
+    }
+
+    button.primary:hover {
+      box-shadow: 0 0 14px var(--accentGlow);
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: #1d2232;
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-decoration: none;
+    }
+
+    button.secondary:hover {
+      background: #23293a;
+      transform: translateY(-1px);
+    }
+
+    .status {
+      margin-top: 0.7rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .status.ok   { color: var(--ok); }
+    .status.err  { color: var(--danger); }
+
+    .hint {
+      margin-top: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.45rem; }
+      .card { padding: 1rem; }
+    }
   </style>
 </head>
+
 <body>
-<header>
-  <h1>Verify Audit Receipt — SHA-256</h1>
-</header>
+  <header>
+    <h1>A.B.E. — Verify Audit Hash</h1>
+    <p>Confirm that your saved audit block has not been altered since the receipt was created.</p>
+  </header>
 
-<div class="wrap">
-  <p>Step 1: Paste your **export block** below (the JSON text from the Export step).</p>
-  <textarea id="exportText" placeholder="{ ... }"></textarea>
+  <div class="wrap">
+    <!-- Step 1: Export block -->
+    <section class="card">
+      <h2>Step 1 — Paste your export block</h2>
+      <p class="lead">
+        Paste the **exact export block JSON** you previously saved.  
+        If even one character is different, the hash will not match.
+      </p>
 
-  <p>Step 2: Paste the **recorded SHA-256 hash** from your receipt.</p>
-  <input id="recordedHash" placeholder="your-saved-hash-string" />
+      <label for="exportBlockVerify">Export block JSON</label>
+      <textarea id="exportBlockVerify" spellcheck="false" autocomplete="off"></textarea>
 
-  <button onclick="verify()">Run Verification</button>
+      <div class="hint">
+        This should match what you copied from <code>/engine/export/</code> when you generated your hash.
+      </div>
 
-  <div id="result" class="result"></div>
-</div>
+      <div class="btn-row">
+        <button class="secondary" type="button" id="goExportBtn">
+          Need a hash? Go to Export
+        </button>
+      </div>
+    </section>
 
-<footer>© 2025 Terra Dawn Shouse — A.B.E. Engine</footer>
+    <!-- Step 2: Hash input + verification -->
+    <section class="card">
+      <h2>Step 2 — Paste your recorded SHA-256 hash</h2>
+      <p class="lead">
+        Paste the SHA-256 hash from your receipt or notes.  
+        The engine will recompute the hash of the export block and compare.
+      </p>
 
-<script>
-async function sha256(text) {
-  const enc = new TextEncoder().encode(text);
-  const buf = await crypto.subtle.digest('SHA-256', enc);
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2,'0'))
-    .join('');
-}
+      <label for="hashInput">Recorded SHA-256 hash</label>
+      <input type="text" id="hashInput" spellcheck="false" autocomplete="off" />
 
-async function verify() {
-  const block = document.getElementById('exportText').value.trim();
-  const recorded = document.getElementById('recordedHash').value.trim().toLowerCase();
-  const out = document.getElementById('result');
+      <div class="btn-row">
+        <button class="primary" type="button" id="verifyBtn">Run Verification</button>
+      </div>
 
-  if (!block || !recorded) {
-    out.innerHTML = '<span class="bad">Both the export block and recorded hash are required.</span>';
-    return;
-  }
+      <p id="verifyStatus" class="status" style="display:none;"></p>
 
-  const computed = await sha256(block);
-  if (computed === recorded) {
-    out.innerHTML = '<span class="ok">✔ Match confirmed.</span> ' +
-      'The export text is unchanged from the time this hash was created.';
-  } else {
-    out.innerHTML = '<span class="bad">✖ Hash mismatch.</span> ' +
-      'Either the export text or the recorded hash has been altered.<br>' +
-      '<strong>Computed:</strong> ' + computed + '<br>' +
-      '<strong>Recorded:</strong> ' + recorded;
-  }
-}
-</script>
+      <div class="hint">
+        If the result is <strong>VALID</strong>, your export block is bit-for-bit identical to what existed when the hash was created.
+      </div>
+    </section>
+
+    <footer>
+      A.B.E. — American Butterfly Effect • Verify Module<br />
+      Licensed under
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
+        CC BY-NC 4.0 International
+      </a>. © Terra Dawn Shouse
+    </footer>
+  </div>
+
+  <script>
+    const exportVerifyEl = document.getElementById('exportBlockVerify');
+    const hashInputEl   = document.getElementById('hashInput');
+    const verifyBtn     = document.getElementById('verifyBtn');
+    const statusEl      = document.getElementById('verifyStatus');
+    const goExportBtn   = document.getElementById('goExportBtn');
+
+    // Simple navigation back to Export (no auto-redirect, user chooses).
+    goExportBtn.addEventListener('click', () => {
+      window.location.href = "../export/index.html";
+    });
+
+    async function sha256Hex(text) {
+      const enc = new TextEncoder();
+      const data = enc.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function setStatus(msg, ok) {
+      statusEl.style.display = "block";
+      statusEl.textContent = msg;
+      statusEl.className = "status " + (ok ? "ok" : "err");
+    }
+
+    verifyBtn.addEventListener('click', async () => {
+      const exportText = exportVerifyEl.value.trim();
+      const recorded   = hashInputEl.value.trim();
+
+      if (!exportText) {
+        setStatus("Export block is empty. Paste your saved JSON first.", false);
+        return;
+      }
+      if (!recorded) {
+        setStatus("Recorded hash is empty. Paste your saved SHA-256 value.", false);
+        return;
+      }
+
+      try {
+        const recomputed = await sha256Hex(exportText);
+        const recNorm = recorded.toLowerCase();
+        const recomputedNorm = recomputed.toLowerCase();
+
+        if (recNorm === recomputedNorm) {
+          setStatus("VALID: The export block matches the recorded SHA-256 hash.", true);
+        } else {
+          setStatus(
+            "MISMATCH: The recomputed hash does NOT match the recorded hash. " +
+            "The export block has been changed or the wrong hash was used.",
+            false
+          );
+        }
+      } catch (err) {
+        console.error(err);
+        setStatus("Error computing hash. Check your browser security settings.", false);
+      }
+    });
+  </script>
 </body>
 </html>
