@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>A.B.E. — Plain-Language Audit Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #05060a;
+      --panel: #111522;
+      --panel-soft: #171b28;
+      --ink: #e6e6e6;
+      --muted: #9fb3c8;
+      --accent: #ffd857;
+      --accentGlow: #ffe892;
+      --danger: #ff6b6b;
+      --ok: #4bd28f;
+      --link: #5ddfff;
+      --borderSubtle: rgba(255,255,255,0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #161b29 0, #05060a 55%);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      padding: 0 0 3rem;
+    }
+
+    header {
+      padding: 1.75rem 1.25rem 0.75rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 0.4rem;
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 1.5rem auto 0;
+      padding: 1.25rem;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 14px;
+      border: 1px solid var(--borderSubtle);
+      padding: 1.25rem 1.25rem 1.5rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.55);
+      margin-bottom: 1.25rem;
+    }
+
+    .card.hi {
+      border-color: rgba(255,216,87,0.45);
+    }
+
+    .card h2 {
+      margin: 0 0 0.6rem;
+      font-size: 1.15rem;
+    }
+
+    .card p.lead {
+      margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.4rem 0 0.8rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: #171b28;
+    }
+
+    .pill strong {
+      margin-right: 0.25rem;
+      color: var(--accentGlow);
+      font-weight: 600;
+    }
+
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .big-text {
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    .big-text strong {
+      color: var(--accentGlow);
+      font-weight: 600;
+    }
+
+    ul {
+      margin: 0.4rem 0 0.8rem;
+      padding-left: 1.1rem;
+      font-size: 0.92rem;
+    }
+
+    li {
+      margin: 0.2rem 0;
+    }
+
+    .law-preview {
+      margin-top: 0.4rem;
+      background: var(--panel-soft);
+      border-radius: 10px;
+      border: 1px solid var(--borderSubtle);
+      padding: 0.75rem;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.8rem;
+      max-height: 220px;
+      overflow: auto;
+      white-space: pre-wrap;
+    }
+
+    .tagline {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    .hint {
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .disclaimer {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: transform 0.07s ease, box-shadow 0.07s ease, background 0.12s ease;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 0 0 rgba(0,0,0,0.4);
+    }
+
+    button.primary:hover {
+      box-shadow: 0 0 14px var(--accentGlow);
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: #1d2232;
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    button.secondary:hover {
+      background: #23293a;
+      transform: translateY(-1px);
+    }
+
+    .btn-row {
+      margin-top: 0.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    footer {
+      margin-top: 1.75rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    a {
+      color: var(--link);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    @media (max-width: 640px) {
+      header h1 { font-size: 1.45rem; }
+      .card { padding: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>A.B.E. — Plain-Language Audit Summary</h1>
+    <p>This page turns your technical audit into human language for real people.</p>
+  </header>
+
+  <div class="wrap">
+    <!-- High-level summary -->
+    <section class="card hi">
+      <h2>What this looks like in plain language</h2>
+      <p class="lead" id="summaryLead">
+        Loading your audit snapshot from the earlier steps…
+      </p>
+
+      <div class="pill-row">
+        <div class="pill"><strong id="pillState">State:</strong><span id="pillStateVal">Unknown</span></div>
+        <div class="pill"><strong id="pillCase">Case:</strong><span id="pillCaseVal">Not set</span></div>
+        <div class="pill"><strong id="pillSeverity">Severity:</strong><span id="pillSeverityVal">Not rated</span></div>
+      </div>
+
+      <div class="big-text" id="summaryMain">
+        …
+      </div>
+
+      <p class="tagline">
+        This is an informational summary of what your own inputs suggest. It is meant to help you talk about your situation, not to replace a lawyer.
+      </p>
+    </section>
+
+    <!-- Rights & power structure -->
+    <section class="card">
+      <h2>What this likely means for your rights</h2>
+      <p class="lead">
+        Based on your inputs, here are the big-picture takeaways in normal language.
+      </p>
+
+      <ul id="rightsList">
+        <!-- filled by script -->
+      </ul>
+
+      <p class="hint">
+        Use these points when explaining your situation to a lawyer, judge, journalist, legislator, or advocacy group.
+      </p>
+    </section>
+
+    <!-- Laws & funding you entered -->
+    <section class="card">
+      <h2>The laws and funding you told the engine about</h2>
+      <p class="lead">
+        This is a preview of the legal text and funding description you entered earlier.
+      </p>
+
+      <div class="label">Detected key phrases</div>
+      <ul id="keywordList"></ul>
+
+      <div class="label" style="margin-top:0.5rem;">Law text preview (first part)</div>
+      <div class="law-preview" id="lawPreview">(no law text found in this session)</div>
+
+      <div class="label" style="margin-top:0.5rem;">Funding / grants you described</div>
+      <div class="law-preview" id="fundingPreview">(no funding description found in this session)</div>
+
+      <p class="hint">
+        If this doesn’t look right, go back to the earlier steps and re-run the audit with the correct statutes and funding sources.
+      </p>
+    </section>
+
+    <!-- Next questions the citizen can ask -->
+    <section class="card">
+      <h2>Questions you can ask in plain language</h2>
+      <p class="lead">
+        These are example questions a regular person can ask to challenge overreach and get clarity.
+      </p>
+
+      <ul id="questionList">
+        <!-- filled by script -->
+      </ul>
+
+      <div class="btn-row">
+        <button class="secondary" type="button" id="backToExportBtn">
+          View export & hash receipt
+        </button>
+        <button class="secondary" type="button" id="backHomeBtn">
+          Back to start page
+        </button>
+      </div>
+
+      <p class="disclaimer">
+        This page is an educational summary generated from your own inputs and does not create an attorney–client relationship.
+      </p>
+    </section>
+
+    <footer>
+      A.B.E. — American Butterfly Effect • Plain-Language Output Module<br />
+      Licensed under
+      <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">
+        CC BY-NC 4.0 International
+      </a>. © Terra Dawn Shouse
+    </footer>
+  </div>
+
+  <script>
+    function grab(key, fallback = null) {
+      try {
+        const v = localStorage.getItem(key);
+        return v !== null ? v : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+
+    function normalizeSeverity(vRaw) {
+      if (!vRaw) return "not rated";
+      const v = vRaw.toString().trim().toLowerCase();
+      if (v.includes("extreme")) return "EXTREME — system-level danger";
+      if (v.includes("high")) return "HIGH — serious rights risk";
+      if (v.includes("medium")) return "MEDIUM — important but limited scope";
+      if (v.includes("low")) return "LOW — mostly technical or narrow";
+      return vRaw;
+    }
+
+    function detectKeywords(text) {
+      if (!text) return [];
+      const hits = [];
+      const lower = text.toLowerCase();
+
+      function hit(label, pattern) {
+        if (pattern.test(lower)) hits.push(label);
+      }
+
+      hit("Iowa Code 321.218 (driving while suspended)", /321\.218/);
+      hit("Iowa Code 321 (motor vehicles)", /321[\.:]/);
+      hit("Louisiana Title 32 (traffic / motor vehicles)", /title 32|rs 32[:\.]/);
+      hit("implied consent / chemical testing", /implied consent|chemical test|32:661|321j\.2/);
+      hit("commercial driver / CDL", /cdl|commercial driver|commercial motor vehicle/);
+      hit("FMCSA / federal motor carrier rules", /fmcsa|fmcsr|49 cfr|49 u\.?s\.?c\.?/);
+      hit("grant or highway safety funding", /grant|funding|mcsap|nhtsa|highway safety/);
+      hit("suspension / revocation / barred license", /suspend|revok|barred|disqualification/);
+      hit("traffic stop / roadside stop", /traffic stop|roadside|pulled.*over|stopped on the road/);
+
+      return Array.from(new Set(hits));
+    }
+
+    function buildSummaryText(state, caseType, severity) {
+      const sev = (severity || "").toLowerCase();
+      let tone;
+      if (sev.includes("extreme")) {
+        tone = "a very serious, system-level situation where the enforcement against you may be part of a larger structural problem.";
+      } else if (sev.includes("high")) {
+        tone = "a serious situation where your rights and future could be heavily affected by how this is handled.";
+      } else if (sev.includes("medium")) {
+        tone = "an important situation with real consequences, but likely narrower in scope.";
+      } else if (sev.includes("low")) {
+        tone = "a lower-level enforcement issue, but still worth understanding and documenting.";
+      } else {
+        tone = "a situation that has not been formally rated, but still deserves careful attention.";
+      }
+
+      const loc = state && state !== "Unknown" ? ` in ${state}` : "";
+      const ct = caseType && caseType !== "Not set" ? caseType : "your case";
+
+      return (
+        `Based on what you entered, this looks like ${ct}${loc}. ` +
+        `In plain language, that means you are dealing with ${tone} ` +
+        `This summary is here so a regular person can understand the situation without learning legal code or computer jargon.`
+      );
+    }
+
+    function buildRightsBullets(state, lawText, fundingText, severityRaw) {
+      const items = [];
+      const sev = (severityRaw || "").toLowerCase();
+      const isTraffic = /321\.218|traffic|title 32|321[\.:]/i.test(lawText || "");
+      const mentionsImplied = /implied consent|chemical test|32:661|321j\.2/i.test(lawText || "");
+      const mentionsFunding = /grant|funding|mcsap|nhtsa|highway safety/i.test(fundingText || "");
+
+      if (isTraffic) {
+        items.push(
+          "Your situation appears to be built on traffic or vehicle statutes. In many states, those rules started as commercial transportation rules and are now being used on everyday people."
+        );
+      }
+
+      if (mentionsImplied) {
+        items.push(
+          "You mentioned implied consent or chemical testing. In plain language, the state is treating you as if you already agreed in advance to be tested, just because you used the road."
+        );
+      }
+
+      if (mentionsFunding) {
+        items.push(
+          "You flagged grants or highway safety funding. That usually means agencies get money when they enforce more, not necessarily when they respect rights more."
+        );
+      }
+
+      if (!items.length) {
+        items.push(
+          "Your inputs suggest that government power is being used against you in a way that deserves scrutiny, even if the exact labels (traffic, funding, implied consent) were not spelled out."
+        );
+      }
+
+      if (sev.includes("extreme") || sev.includes("high")) {
+        items.push(
+          "Because you marked this as high or extreme severity, you should treat this as more than 'just a ticket'. It can affect your record, your income, and in some cases even your freedom."
+        );
+      }
+
+      items.push(
+        "You have the right to ask what specific law gave this officer or agency the power to act the way they did, and whether that law was actually meant for people in your situation."
+      );
+
+      return items;
+    }
+
+    function buildQuestions(state, lawText, fundingText) {
+      const qs = [];
+
+      qs.push(
+        "“What exact statute or code section are you using to justify this stop, charge, or action against me?”"
+      );
+      qs.push(
+        "“Was I being treated as a commercial driver or a private person going about my life?”"
+      );
+      qs.push(
+        "“Which agency’s authority are you using here — and where in the law does it say they can apply commercial-style rules to private citizens?”"
+      );
+
+      if (/grant|funding|mcsap|nhtsa|highway safety/i.test(fundingText || "")) {
+        qs.push(
+          "“Is any of this enforcement linked to a grant or federal highway safety funding that rewards higher ticket or stop numbers?”"
+        );
+      }
+
+      if (/321\.218/i.test(lawText || "")) {
+        qs.push(
+          "“My license status is being used against me, but why was it suspended or barred in the first place, and how is that connected to actual safety instead of money or paperwork?”"
+        );
+      }
+
+      qs.push(
+        "“Has anyone checked whether using these laws on people like me conflicts with federal definitions or the Constitution?”"
+      );
+
+      return qs;
+    }
+
+    (function init() {
+      const state = grab("abe_state", "Unknown");
+      const caseType = grab("abe_case_type", "Not set");
+      const severityStored = grab("abe_validity", null);
+      const severityNorm = normalizeSeverity(severityStored);
+      const lawText = grab("abe_law_block", "");
+      const fundingText = grab("abe_funding", "");
+
+      // Fill header pills
+      document.getElementById("pillStateVal").textContent = state || "Unknown";
+      document.getElementById("pillCaseVal").textContent = caseType || "Not set";
+      document.getElementById("pillSeverityVal").textContent = severityNorm;
+
+      // Lead and main summary
+      const leadEl = document.getElementById("summaryLead");
+      const mainEl = document.getElementById("summaryMain");
+      leadEl.textContent =
+        "This is a human-readable overview built from the information you entered in the earlier steps.";
+
+      mainEl.textContent = buildSummaryText(state, caseType, severityNorm);
+
+      // Rights bullets
+      const rightsList = document.getElementById("rightsList");
+      rightsList.innerHTML = "";
+      const rightsItems = buildRightsBullets(state, lawText, fundingText, severityNorm);
+      rightsItems.forEach(t => {
+        const li = document.createElement("li");
+        li.textContent = t;
+        rightsList.appendChild(li);
+      });
+
+      // Keywords
+      const keywordList = document.getElementById("keywordList");
+      keywordList.innerHTML = "";
+      const kws = detectKeywords(lawText + "\n" + fundingText);
+      if (!kws.length) {
+        const li = document.createElement("li");
+        li.textContent = "No specific phrases were detected. This is okay, but you may want to be sure you included the exact statute numbers and key terms.";
+        keywordList.appendChild(li);
+      } else {
+        kws.forEach(k => {
+          const li = document.createElement("li");
+          li.textContent = k;
+          keywordList.appendChild(li);
+        });
+      }
+
+      // Law + funding preview
+      const lawPrevEl = document.getElementById("lawPreview");
+      const fundingPrevEl = document.getElementById("fundingPreview");
+
+      if (lawText && lawText.trim()) {
+        const trimmed = lawText.trim();
+        lawPrevEl.textContent =
+          trimmed.length > 1200 ? trimmed.slice(0, 1200) + "\n\n[preview truncated]" : trimmed;
+      } else {
+        lawPrevEl.textContent = "(no law text found in this session)";
+      }
+
+      if (fundingText && fundingText.trim()) {
+        const trimmedF = fundingText.trim();
+        fundingPrevEl.textContent =
+          trimmedF.length > 1200 ? trimmedF.slice(0, 1200) + "\n\n[preview truncated]" : trimmedF;
+      } else {
+        fundingPrevEl.textContent = "(no funding description found in this session)";
+      }
+
+      // Questions list
+      const qList = document.getElementById("questionList");
+      qList.innerHTML = "";
+      const qs = buildQuestions(state, lawText, fundingText);
+      qs.forEach(q => {
+        const li = document.createElement("li");
+        li.textContent = q;
+        qList.appendChild(li);
+      });
+
+      // Nav buttons
+      document.getElementById("backToExportBtn").addEventListener("click", () => {
+        window.location.href = "../export/index.html";
+      });
+
+      document.getElementById("backHomeBtn").addEventListener("click", () => {
+        window.location.href = "/public/index.html";
+      });
+    })();
+  </script>
+</body>
+</html>
